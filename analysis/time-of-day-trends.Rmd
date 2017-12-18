@@ -1,0 +1,126 @@
+---
+title: "Divvy usage by time-of-day"
+author: "Peter Carbonetto"
+output: html_document
+---
+
+<!-- Define defaults shared by all workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository
+ exists and R package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+Here we use the Divvy trip data to examine biking trends over the
+course of a typical day in Chicago. 
+
+I begin by loading a few packages, as well as some additional
+functions I wrote for this project.
+
+```{r load-packages, message = FALSE}
+library(data.table)
+library(ggplot2)
+source("../code/functions.R")
+```
+
+## Read the data
+
+Following [my earlier steps](first-glance.html), I use function
+`read.divvy.data` to read the trip and station data from the CSV
+files.
+
+```{r load-data}
+divvy <- read.divvy.data()
+```
+
+To make it easier to compile statistics by time of day, I convert the
+"start hour" column to a factor.
+
+```{r convert-start-hour}
+divvy$trips <- transform(divvy$trips,start.hour = factor(start.hour,0:23))
+```
+
+## Count departures by time-of-day
+
+Now that `start.hour` is a factor, it is easy to create a bar chart
+showing the total number of departures at each hour. Unsurprisingly,
+we see little biking activity at night. Further, the two peaks
+("modes") in the bar chart nicely recapitulate the morning and
+afternoon rush hours.
+
+```{r timeofday-barchart, fig.height = 2.5, fig.width = 5}
+ggplot(divvy$trips,aes(start.hour)) +
+  geom_bar(fill = "dodgerblue",width = 0.6) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+```
+
+However, this bar chart is a bit muddled because it is counting trips
+during the week and on the weekends. Consider that the bin count
+$x[h]$ for hour $h$ in the histogram above is a sum of the counts for
+each day of the week:
+
+$$
+\begin{align}
+x[h] 
+& = \sum_{i\;\in\;\mathsf{DaysOfTheWeek}} x_i[h] \\
+& = x_{\mathsf{Mon}}[h] + x_{\mathsf{Tue}}[h] + x_{\mathsf{Wed}}[h] +
+x_{\mathsf{Thu}}[h] + x_{\mathsf{Fri}}[h] + x_{\mathsf{Sat}}[h] +
+x_{\mathsf{Sun}}[h]
+\end{align}
+$$
+
+*Note:* The math above is embedded in the webpage using 
+[MathJax](https://github.com/mathjax/MathJax). See [here](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
+for an excellent reference on MathJax.
+
+Once we plot the counts separately for each the day of the week, the
+rush-hour trends become more obvious. (Also notice that the rush-hour
+weeks disappear on Saturday and Sunday.)
+
+```{r timeofday-barchart-2, fig.height = 6, fig.width = 6}
+ggplot(divvy$trips,aes(start.hour)) +
+  geom_bar(fill = "dodgerblue",width = 0.75) +
+  facet_wrap(~start.day,ncol = 2) +
+  scale_x_discrete(breaks = seq(0,24,2)) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+```
+
+## Time-of-day trends at University of Chicago
+
+The commuting trends are different at the University of Chicago Divvy
+station---there isn't much of a morning rush hour. This may be because
+students and staff don't regularly use the Divvy bikes for commuting.
+
+```{r timeofday-uchicago-barchart, fig.height = 6, fig.width = 6}
+ggplot(subset(divvy$trips,from_station_name == "University Ave & 57th St"),
+       aes(start.hour)) +
+  geom_bar(fill = "dodgerblue",width = 0.75) +
+  facet_wrap(~start.day,ncol = 2) +
+  scale_x_discrete(breaks = seq(0,24,2)) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+```
+
+## Session information
+
+This is the version of R and the packages that were used to generate
+these results.
+
+```{r session-info}
+```
