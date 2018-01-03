@@ -25,8 +25,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -36,10 +36,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -310,86 +312,86 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2017-10-10</p>
+<p><strong>Last updated:</strong> 2018-01-04</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> a60161d</p>
+<p><strong>Code version:</strong> e4f431a</p>
 <!-- Add your analysis here -->
-<div id="review-papers" class="section level2">
+<section id="review-papers" class="level2">
 <h2>Review papers</h2>
 <ul>
 <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/26157023" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/26157023</a></li>
 </ul>
-</div>
-<div id="methods-using-individual-level-data" class="section level2">
+</section>
+<section id="methods-using-individual-level-data" class="level2">
 <h2>Methods using individual-level data</h2>
-<div id="bimbam" class="section level3">
+<section id="bimbam" class="level3">
 <h3>BIMBAM</h3>
 <ul>
 <li>Paper: <a href="http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.0030114" class="uri">http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.0030114</a></li>
 <li>Software: <a href="http://www.haplotype.org/bimbam.html" class="uri">http://www.haplotype.org/bimbam.html</a></li>
 </ul>
-</div>
-</div>
-<div id="methods-using-summary-level-data" class="section level2">
+</section>
+</section>
+<section id="methods-using-summary-level-data" class="level2">
 <h2>Methods using summary-level data</h2>
-<div id="caviar" class="section level3">
+<section id="caviar" class="level3">
 <h3>CAVIAR</h3>
 <ul>
 <li>Paper: <a href="http://www.genetics.org/content/198/2/497.long" class="uri">http://www.genetics.org/content/198/2/497.long</a></li>
 <li>Software: <a href="http://genetics.cs.ucla.edu/caviar/index.html" class="uri">http://genetics.cs.ucla.edu/caviar/index.html</a></li>
 </ul>
-</div>
-<div id="caviarbf" class="section level3">
+</section>
+<section id="caviarbf" class="level3">
 <h3>CAVIARBF</h3>
 <ul>
 <li>Paper: <a href="http://www.genetics.org/content/200/3/719" class="uri">http://www.genetics.org/content/200/3/719</a></li>
 <li>Software: <a href="https://bitbucket.org/Wenan/caviarbf" class="uri">https://bitbucket.org/Wenan/caviarbf</a></li>
 </ul>
-</div>
-<div id="finemap" class="section level3">
+</section>
+<section id="finemap" class="level3">
 <h3>FINEMAP</h3>
 <ul>
 <li>Paper: <a href="https://www.ncbi.nlm.nih.gov/pubmed/26773131" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/26773131</a></li>
 <li>Software: <a href="http://www.christianbenner.com/finemap_v1.1_MacOSX.tgz" class="uri">http://www.christianbenner.com/finemap_v1.1_MacOSX.tgz</a></li>
 </ul>
-</div>
-<div id="jam" class="section level3">
+</section>
+<section id="jam" class="level3">
 <h3>JAM</h3>
 <ul>
 <li>Paper: <a href="https://www.ncbi.nlm.nih.gov/pubmed/27027514" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/27027514</a></li>
 <li>Software: <a href="https://github.com/pjnewcombe/R2BGLiMS" class="uri">https://github.com/pjnewcombe/R2BGLiMS</a></li>
 </ul>
-</div>
-</div>
-<div id="methods-using-external-information" class="section level2">
+</section>
+</section>
+<section id="methods-using-external-information" class="level2">
 <h2>Methods using external information</h2>
 <p>TBA</p>
-</div>
-<div id="session-information" class="section level2">
+</section>
+<section id="session-information" class="level2">
 <h2>Session information</h2>
 <!-- Insert the session information into the document -->
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 3.4.2 (2017-09-28)
 Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: macOS High Sierra 10.13
+Running under: macOS Sierra 10.12.1
 
 Matrix products: default
 BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
 LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+[1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] compiler_3.4.2  backports_1.1.0 magrittr_1.5    rprojroot_1.2  
- [5] tools_3.4.2     htmltools_0.3.6 yaml_2.1.14     Rcpp_0.12.12   
- [9] stringi_1.1.5   rmarkdown_1.6   knitr_1.17      git2r_0.19.0   
-[13] stringr_1.2.0   digest_0.6.12   evaluate_0.10.1</code></pre>
-</div>
+ [1] compiler_3.4.2  backports_1.1.1 magrittr_1.5    rprojroot_1.2  
+ [5] tools_3.4.2     htmltools_0.3.6 yaml_2.1.15     Rcpp_0.12.14   
+ [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.17      git2r_0.19.0   
+[13] stringr_1.2.0   digest_0.6.13   evaluate_0.10.1</code></pre>
+</section>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({

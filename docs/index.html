@@ -23,8 +23,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -305,75 +307,75 @@ div.tocify {
 <p>This is a website for organizing my reading notes of research papers.</p>
 <p>If you have any question about this project, please feel free to contact me: <a href="https://github.com/xiangzhu">Xiang Zhu</a>, <code>xiangzhu@stanford.edu</code>.</p>
 <hr />
-<div id="integrative-genomics" class="section level2">
+<section id="integrative-genomics" class="level2">
 <h2>Integrative Genomics</h2>
-<div id="peca-model" class="section level3">
+<section id="peca-model" class="level3">
 <h3><a href="">PECA model</a></h3>
 <ul>
 <li>Duren, Z., Chen, X., Jiang, R., Wang, Y., &amp; Wong, W. H. (2017). Modeling gene regulation from paired expression and chromatin accessibility data. <em>Proc. Natl. Acad. Sci. U.S.A.</em></li>
 <li>Paper: <a href="http://www.pnas.org/content/114/25/E4914" class="uri">http://www.pnas.org/content/114/25/E4914</a></li>
 <li>Software: <a href="http://web.stanford.edu/~zduren/PECA/" class="uri">http://web.stanford.edu/~zduren/PECA/</a></li>
 </ul>
-</div>
-<div id="omnigenic-model" class="section level3">
+</section>
+<section id="omnigenic-model" class="level3">
 <h3><a href="">Omnigenic model</a></h3>
 <ul>
 <li>Boyle, E. A., Li, Y. I., &amp; Pritchard, J. K. (2017). An Expanded View of Complex Traits: From Polygenic to Omnigenic. <em>Cell</em>.</li>
 <li>Paper: <a href="https://www.ncbi.nlm.nih.gov/pubmed/28622505" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/28622505</a></li>
 </ul>
 <hr />
-</div>
-</div>
-<div id="electronic-medicalhealth-records" class="section level2">
+</section>
+</section>
+<section id="electronic-medicalhealth-records" class="level2">
 <h2>Electronic Medical/Health Records</h2>
-<div id="analysis-of-insurance-claims" class="section level3">
+<section id="analysis-of-insurance-claims" class="level3">
 <h3><a href="">Analysis of insurance claims</a></h3>
 <ul>
 <li>Wang, K., Gaitsch, H., Poon, H., Cox, N. J., &amp; Rzhetsky, A. (2017). Classification of common human diseases derived from shared genetic and environmental determinants. <em>Nat. Genet.</em></li>
 <li>Paper: <a href="http://www.nature.com/ng/journal/v49/n9/full/ng.3931.html" class="uri">http://www.nature.com/ng/journal/v49/n9/full/ng.3931.html</a></li>
 </ul>
-</div>
-<div id="treewas-model" class="section level3">
+</section>
+<section id="treewas-model" class="level3">
 <h3><a href="">TreeWAS model</a></h3>
 <ul>
 <li>Cortes, A., Dendrou, C., Motyer, A., Jostins, L., Vukcevic, D., Dilthey, A., Donnelly, P., Leslie, S., Fugger, L., &amp; McVean, G. (2017). Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank. <em>Nat. Genet.</em></li>
 <li>Paper: <a href="https://www.nature.com/ng/journal/v49/n9/full/ng.3926.html" class="uri">https://www.nature.com/ng/journal/v49/n9/full/ng.3926.html</a></li>
 <li>Software: <a href="https://github.com/mcveanlab/TreeWAS" class="uri">https://github.com/mcveanlab/TreeWAS</a></li>
 </ul>
-</div>
-<div id="stochastic-compartmental-model-for-infection" class="section level3">
+</section>
+<section id="stochastic-compartmental-model-for-infection" class="level3">
 <h3><a href="">Stochastic compartmental model for infection</a></h3>
 <ul>
 <li>Cule, M. &amp; Donnelly, P. (2017). Stochastic modelling and inference in electronic hospital databases for the spread of infections: Clostridium difficile transmission in Oxfordshire hospitals 2007–2010. <em>Ann. Appl. Stat.</em></li>
 <li>Paper: <a href="https://projecteuclid.org/euclid.aoas/1500537718" class="uri">https://projecteuclid.org/euclid.aoas/1500537718</a></li>
 </ul>
 <hr />
-</div>
-</div>
-<div id="han-chinese-population-genetics" class="section level2">
+</section>
+</section>
+<section id="han-chinese-population-genetics" class="level2">
 <h2>Han Chinese Population Genetics</h2>
-<div id="major-depressive-disorder-gwas" class="section level3">
+<section id="major-depressive-disorder-gwas" class="level3">
 <h3>Major depressive disorder GWAS</h3>
 <ul>
 <li>Converge Consortium. (2015). Sparse whole genome sequencing identifies two loci for major depressive disorder. <em>Nature.</em></li>
 <li>Paper: <a href="http://www.nature.com/nature/journal/v523/n7562/full/nature14659.html" class="uri">http://www.nature.com/nature/journal/v523/n7562/full/nature14659.html</a></li>
 </ul>
-</div>
-<div id="genetic-variation" class="section level3">
+</section>
+<section id="genetic-variation" class="level3">
 <h3>Genetic variation</h3>
 <ul>
 <li>Charleston W. K. Chiang, Serghei Mangul, Christopher R. Robles, Warren W. Kretzschmar, Na Cai, Kenneth S. Kendler, Sriram Sankararam, Jonathan Flint. (2017). A comprehensive map of genetic variation in the world’s largest ethnic group - Han Chinese. <em>bioRxiv.</em></li>
 <li>Preprint: <a href="https://www.biorxiv.org/content/early/2017/07/13/162982" class="uri">https://www.biorxiv.org/content/early/2017/07/13/162982</a></li>
 </ul>
 <hr />
-</div>
-</div>
-<div id="statistical-genetics" class="section level2">
+</section>
+</section>
+<section id="statistical-genetics" class="level2">
 <h2>Statistical Genetics</h2>
-<div id="an-incomplete-list-of-fine-mapping-methods" class="section level3">
+<section id="an-incomplete-list-of-fine-mapping-methods" class="level3">
 <h3><a href="fine_mapping">An incomplete list of fine mapping methods</a></h3>
-</div>
-</div>
+</section>
+</section>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
