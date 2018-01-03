@@ -1,6 +1,6 @@
-# Divvy data exploration: a workflowr project illustration
+# paper-reading
 
-An illustration of [workflowr](https://jdblischak.github.io/workflowr)
-for developing a organized, sharable and reproducible data analysis.
+My notes of reading research papers,
+an online notebook managed by [workflowr][] package.
 
-View the project website [here](https://stephenslab.github.io/wflow-divvy).
+[workflowr]: https://github.com/jdblischak/workflowr

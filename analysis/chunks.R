@@ -5,8 +5,7 @@
 # Update knitr chunk options
 # https://yihui.name/knitr/options/#chunk-options
 knitr::opts_chunk$set(
-  comment = "#",
-  collapse = TRUE,
+  comment = NA,
   fig.align = "center",
   tidy = FALSE,
   fig.path = paste0("figure/", knitr::current_input(), "/")

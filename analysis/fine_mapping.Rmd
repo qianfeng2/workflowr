@@ -1,0 +1,70 @@
+---
+title: "An incomplete list of fine mapping methods"
+author: "Xiang Zhu"
+date: 2017-09-12
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis', warning=FALSE}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+
+## Review papers
+
+- https://www.ncbi.nlm.nih.gov/pubmed/26157023
+
+## Methods using individual-level data 
+
+### BIMBAM
+
+- Paper: http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.0030114
+- Software: http://www.haplotype.org/bimbam.html
+
+## Methods using summary-level data 
+
+### CAVIAR
+
+- Paper: http://www.genetics.org/content/198/2/497.long
+- Software: http://genetics.cs.ucla.edu/caviar/index.html
+
+### CAVIARBF
+
+- Paper: http://www.genetics.org/content/200/3/719
+- Software: https://bitbucket.org/Wenan/caviarbf
+
+### FINEMAP
+
+- Paper: https://www.ncbi.nlm.nih.gov/pubmed/26773131
+- Software: http://www.christianbenner.com/finemap_v1.1_MacOSX.tgz
+
+### JAM
+
+- Paper: https://www.ncbi.nlm.nih.gov/pubmed/27027514
+- Software: https://github.com/pjnewcombe/R2BGLiMS
+
+## Methods using external information
+
+TBA
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```

@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Peter Carbonetto" />
 
 
-<title>Divvy data exploration project</title>
+<title>Home</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,9 +19,13 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -31,12 +34,10 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlightingOnLoad(); }, 0);
-  }
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
 }
 </script>
 
@@ -164,6 +165,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -174,15 +270,12 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Divvy data exploration</a>
+      <a class="navbar-brand" href="index.html">paper-reading</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Overview</a>
-</li>
-<li>
-  <a href="setup.html">Setup</a>
+  <a href="index.html">Home</a>
 </li>
 <li>
   <a href="license.html">License</a>
@@ -190,62 +283,132 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/stephenslab/wflow-divvy">source</a>
+  <a href="https://github.com/xiangzhu/paper-reading">
+    <span class="fa fa-github"></span>
+     
+  </a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
-<!-- Add a small amount of space between sections. -->
-<style type="text/css">
-div.section {
-  padding-top: 12px;
-}
-</style>
 
 <div class="fluid-row" id="header">
 
 
 
-<h1 class="title toc-ignore">Divvy data exploration project</h1>
-<h4 class="author"><em>Peter Carbonetto</em></h4>
+<h1 class="title toc-ignore">Home</h1>
 
 </div>
 
 
-<p><br> <img src="divvy.jpg" alt="Divvy bikes" /> <br> <em><a href="https://www.flickr.com/photos/jamesbondsv/9041673199">Photo</a> by <a href="https://www.flickr.com/photos/jamesbondsv">Steven Vance</a> / <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a></em></p>
-<div id="project-overview" class="section level2">
-<h2>Project overview</h2>
-<p>The purpose of this project is to gain some insight into city-wide biking trends by analyzing the <a href="https://www.divvybikes.com/system-data">Divvy trip data</a>. Also, I examine trip data from one bike station at the University of Chicago to compare the biking patterns at the university against city-wide trends.</p>
-<p>All the results and plots presented in the pages below should be reproduceable on your computer. Follow the <a href="setup.html">Setup Instructions</a> if you are interested in reproducing the results for yourself.</p>
-<p>These are the results of my analyses. They were generated by rendering the <a href="https://github.com/pcarbo/wflow-divvy/tree/master/analysis">R Markdown documents</a> into webpages.</p>
-<ol style="list-style-type: decimal">
-<li><p><a href="first-glance.html">A first glance at the Divvy data.</a></p></li>
-<li><p><a href="station-map.html">A map of the Divvy stations in Chicago.</a></p></li>
-<li><p><a href="time-of-day-trends.html">Exploring daily bike commuting trends from the Divvy data.</a></p></li>
-<li><p><a href="seasonal-trends.html">Exploring seasonal biking trends from the Divvy data.</a></p></li>
-</ol>
+<p>This is a website for organizing my reading notes of research papers.</p>
+<p>If you have any question about this project, please feel free to contact me: <a href="https://github.com/xiangzhu">Xiang Zhu</a>, <code>xiangzhu@stanford.edu</code>.</p>
+<hr />
+<div id="integrative-genomics" class="section level2">
+<h2>Integrative Genomics</h2>
+<div id="peca-model" class="section level3">
+<h3><a href="">PECA model</a></h3>
+<ul>
+<li>Duren, Z., Chen, X., Jiang, R., Wang, Y., &amp; Wong, W. H. (2017). Modeling gene regulation from paired expression and chromatin accessibility data. <em>Proc. Natl. Acad. Sci. U.S.A.</em></li>
+<li>Paper: <a href="http://www.pnas.org/content/114/25/E4914" class="uri">http://www.pnas.org/content/114/25/E4914</a></li>
+<li>Software: <a href="http://web.stanford.edu/~zduren/PECA/" class="uri">http://web.stanford.edu/~zduren/PECA/</a></li>
+</ul>
 </div>
-<div id="credits" class="section level2">
-<h2>Credits</h2>
-<p>This workflowr project was developed by <a href="http://pcarbo.github.io">Peter Carbonetto</a> at the <a href="https://www.uchicago.edu">University of Chicago</a>.</p>
-<p>Thanks to <a href="https://github.com/jdblischak">John Blischak</a> and <a href="http://stephenslab.uchicago.edu">Matthew Stephens</a> for their assistance and support. Also, thanks to <a href="https://rstudio-pubs-static.s3.amazonaws.com/63061_90f5136ffdf74740b6ba4ad8f2fd72fe.html">Larry Layne</a> and <a href="http://www.austinwehrwein.com/data-visualization/heatmaps-with-divvy-data">Austin Wehrwein</a> for sharing their analyses of the Divvy trip data that inspired some of the investigations here.</p>
+<div id="omnigenic-model" class="section level3">
+<h3><a href="">Omnigenic model</a></h3>
+<ul>
+<li>Boyle, E. A., Li, Y. I., &amp; Pritchard, J. K. (2017). An Expanded View of Complex Traits: From Polygenic to Omnigenic. <em>Cell</em>.</li>
+<li>Paper: <a href="https://www.ncbi.nlm.nih.gov/pubmed/28622505" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/28622505</a></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="electronic-medicalhealth-records" class="section level2">
+<h2>Electronic Medical/Health Records</h2>
+<div id="analysis-of-insurance-claims" class="section level3">
+<h3><a href="">Analysis of insurance claims</a></h3>
+<ul>
+<li>Wang, K., Gaitsch, H., Poon, H., Cox, N. J., &amp; Rzhetsky, A. (2017). Classification of common human diseases derived from shared genetic and environmental determinants. <em>Nat. Genet.</em></li>
+<li>Paper: <a href="http://www.nature.com/ng/journal/v49/n9/full/ng.3931.html" class="uri">http://www.nature.com/ng/journal/v49/n9/full/ng.3931.html</a></li>
+</ul>
+</div>
+<div id="treewas-model" class="section level3">
+<h3><a href="">TreeWAS model</a></h3>
+<ul>
+<li>Cortes, A., Dendrou, C., Motyer, A., Jostins, L., Vukcevic, D., Dilthey, A., Donnelly, P., Leslie, S., Fugger, L., &amp; McVean, G. (2017). Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank. <em>Nat. Genet.</em></li>
+<li>Paper: <a href="https://www.nature.com/ng/journal/v49/n9/full/ng.3926.html" class="uri">https://www.nature.com/ng/journal/v49/n9/full/ng.3926.html</a></li>
+<li>Software: <a href="https://github.com/mcveanlab/TreeWAS" class="uri">https://github.com/mcveanlab/TreeWAS</a></li>
+</ul>
+</div>
+<div id="stochastic-compartmental-model-for-infection" class="section level3">
+<h3><a href="">Stochastic compartmental model for infection</a></h3>
+<ul>
+<li>Cule, M. &amp; Donnelly, P. (2017). Stochastic modelling and inference in electronic hospital databases for the spread of infections: Clostridium difficile transmission in Oxfordshire hospitals 2007–2010. <em>Ann. Appl. Stat.</em></li>
+<li>Paper: <a href="https://projecteuclid.org/euclid.aoas/1500537718" class="uri">https://projecteuclid.org/euclid.aoas/1500537718</a></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="han-chinese-population-genetics" class="section level2">
+<h2>Han Chinese Population Genetics</h2>
+<div id="major-depressive-disorder-gwas" class="section level3">
+<h3>Major depressive disorder GWAS</h3>
+<ul>
+<li>Converge Consortium. (2015). Sparse whole genome sequencing identifies two loci for major depressive disorder. <em>Nature.</em></li>
+<li>Paper: <a href="http://www.nature.com/nature/journal/v523/n7562/full/nature14659.html" class="uri">http://www.nature.com/nature/journal/v523/n7562/full/nature14659.html</a></li>
+</ul>
+</div>
+<div id="genetic-variation" class="section level3">
+<h3>Genetic variation</h3>
+<ul>
+<li>Charleston W. K. Chiang, Serghei Mangul, Christopher R. Robles, Warren W. Kretzschmar, Na Cai, Kenneth S. Kendler, Sriram Sankararam, Jonathan Flint. (2017). A comprehensive map of genetic variation in the world’s largest ethnic group - Han Chinese. <em>bioRxiv.</em></li>
+<li>Preprint: <a href="https://www.biorxiv.org/content/early/2017/07/13/162982" class="uri">https://www.biorxiv.org/content/early/2017/07/13/162982</a></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="statistical-genetics" class="section level2">
+<h2>Statistical Genetics</h2>
+<div id="an-incomplete-list-of-fine-mapping-methods" class="section level3">
+<h3><a href="fine_mapping">An incomplete list of fine mapping methods</a></h3>
+</div>
 </div>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
-    "HTML-CSS": { availableFonts: ["TeX"] }
-  });
+      "HTML-CSS": { availableFonts: ["TeX"] }
+    });
 </script>
 
 <hr>
-<p>This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was
-created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
-0.8.0.
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
 </p>
 <hr>
 
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
 
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
 
 </div>
 
