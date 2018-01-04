@@ -16,9 +16,9 @@ If you have any question about this project, please feel free to contact me:
 
 ### [PECA model]()
 
-- Duren, Z., Chen, X., Jiang, R., Wang, Y., & Wong, W. H. (2017). Modeling gene regulation from paired expression and chromatin accessibility data. *Proc. Natl. Acad. Sci. U.S.A.*
-- Paper: http://www.pnas.org/content/114/25/E4914
-- Software: http://web.stanford.edu/~zduren/PECA/
+- A survey of combinatorial methods for phylogenetic networks.* Huson and Scornavacca, Genome Biol. Evol., 2011.* 
+- Paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3017387/pdf/evq077.pdf
+- Note: http://web.stanford.edu/~zduren/PECA/
 
 ### [Omnigenic model]()
 
