@@ -13,7 +13,7 @@
 
 <meta name="date" content="2018-01-04" />
 
-<title>Hybridization,introgression,HGT,recombination,reassortment</title>
+<title>Reticulate evolution</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -301,7 +301,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Hybridization,introgression,HGT,recombination,reassortment</h1>
+<h1 class="title toc-ignore">Reticulate evolution</h1>
 <h4 class="author"><em>Qian Feng</em></h4>
 <h4 class="date"><em>2018-01-04</em></h4>
 
@@ -312,18 +312,18 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-04</p>
+<p><strong>Last updated:</strong> 2018-01-05</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 764dfe6</p>
+<p><strong>Code version:</strong> 6e5eb01</p>
 <!-- Add your analysis here -->
 <p>Evolution involves a series of unobservable historical events, we could neither make direct observation nor perform experiment to investigate them, making phylogenetic an interesting and challenging discipline.</p>
 <p>Sources of evolutionary novelty include vertical evolutionary processes and horizontal evolutionary processes. Phylogenetic trees are intended to solely for vertical processes, however, phylogenetic networks is more general with accommodating horizontal events. These horizontal evolutionary processes are represented by reticulation in networks. In this review paper, the author focus on the rooted phylogenetic network, even though there are a few automated methods available for constructing them. Most empirical networks are constructed either manually or by modifying the output of computer program.</p>
 <p>Pay attention to these words:<code>diploid, polyploid, homoploid</code></p>
 <p>Horizontal evolutionary processes contain hybridization, introgression, HGT, recombination, viral reassortment and genome fusion. The last one is considered to be rather rare since it means the addition of whole genome from one specie to another specie.</p>
-<p><strong>Hybridization</strong>: Hybridization is very common in plants and a small group of animals like fish and reptiles. The new hybrid species consist same amount of genomic materials from each of the two parental species, ie 50:50 composition. Fig 2 shows the difference between homoploid and polyploid. In particular, polyploid is the only form of reticulate evolution we can construct the history by trees. From multi-labelled trees, K.T.Huber has constructed available and implementable method to construct phylogenetic network that is guaranteed to have a minimal number of interaction nodes. The core of this algorithm is merge and prune maximal inextendible subtrees and its equivalent subtrees, this process is repeated until a network is obtained that contains no repeated labeled leaves. Java package <a href="https://www.uea.ac.uk/documents/429378/432070/PADRE+manual.pdf/32316a51-64c8-4a6d-83dc-b48b19744c61">PADRE</a> is available to visualize the network.</p>
+<p><strong>Hybridization</strong>: Hybridization is very common in plants and a small group of animals like fish and reptiles. The new hybrid species consist same amount of genomic materials from each of the two parental species, ie 50:50 composition. Fig 2 shows the difference between homoploid and polyploid. In particular, polyploid is the only form of reticulate evolution we can construct the history by trees. From multi-labelled trees, K.T.Huber has constructed available and implementable method to construct phylogenetic network that is guaranteed to have a minimal number of interaction nodes. The core of this algorithm is merge and prune maximal inextendible subtrees and its equivalent subtrees, this process is repeated until a network is obtained that contains no repeated labeled leaves. Java package <a href="https://www.uea.ac.uk/documents/429378/432070/PADRE+manual.pdf/32316a51-64c8-4a6d-83dc-b48b19744c61">PADRE</a> is available to visualize the network. <img src="Figure2.png" alt="Figure2" /></p>
 <p><strong>Introgression</strong> is not 50:50 composition because hybrid individuals back-cross preferentially to one of the parental species.</p>
-<p><strong>Introgression and HGT</strong> are both the transfer of genetic materials from one specie to another, but the former one occur via sexual reproduction and latter one does not. Fig 3 also vividly show the introgression and HGT. HGT is detected by incompatibility between two or more trees for the same site of species. HGT is common among bacterias.</p>
+<p><strong>Introgression and HGT</strong> are both the transfer of genetic materials from one specie to another, but the former one occur via sexual reproduction and latter one does not. Fig 3 also vividly show the introgression and HGT. HGT is detected by incompatibility between two or more trees for the same site of species. HGT is common among bacterias. <img src="Figure3.png" alt="Figure3" /></p>
 <p><strong>Reassortment</strong> means when two strains co-infect a host cell, then create a new strain by re-combing these two genetic materials.</p>
 <p><strong>Recombination</strong> concludes intra-genic Recombination and inter-genic Recombination. The former one represents the break-points occur within a single gene, however, the latter one can occur in different genes or non-coding space between genes. A noticeable point is crossover means double recombination. In general , genes with low level of recombination will have low levels of polymorphism, hence, recombination has important influence on genome and genetic structure in population.</p>
 <p><strong>Homoplasy</strong> is the development of organs or other bodily structure within different species, resemble each other and have same functions, but do not have the same ancestral origins. For instance, the wings of insects, birds and bats, are homoplastic (meaning: similar in form and structure, but not in origin).</p>
