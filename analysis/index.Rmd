@@ -8,7 +8,7 @@ output:
 This is a website for organizing my reading notes of research papers.
 
 If you have any question about this project, please feel free to contact me:
-[Xiang Zhu](https://github.com/xiangzhu), `xiangzhu@stanford.edu`.
+[Xiang Zhu](https://qianfeng2.github.io), `fengq2@student.unimelb.edu.au`.
 
 ***
 
