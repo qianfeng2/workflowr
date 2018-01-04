@@ -50,7 +50,7 @@ If you have any question about this project, please feel free to contact me:
 - Paper: https://academic.oup.com/mbe/article/23/9/1784/1014292 
 - Note: [link]()
 
-![testpig](../docs/8.jpg)
+![testpig](8.jpg)
 
 ***
 
