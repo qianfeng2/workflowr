@@ -12,55 +12,48 @@ If you have any question about this project, please feel free to contact me:
 
 ***
 
-## Integrative Genomics
+## Paper review
 
-### [Paper review]()
+### [Huson 2011]()
 
 - A survey of combinatorial methods for phylogenetic networks. *Huson and Scornavacca, Genome Biol. Evol.2011*. 
 - Paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3017387/pdf/evq077.pdf
 - Note: [link](Huson2011paper.html)
 
-### [Omnigenic model]()
+### [David A.Morrison 2014]()
 
-- Boyle, E. A., Li, Y. I., & Pritchard, J. K. (2017). An Expanded View of Complex Traits: From Polygenic to Omnigenic. *Cell*.
-- Paper: https://www.ncbi.nlm.nih.gov/pubmed/28622505 
+- Phylogenetic networks: a review of methods to display evolutionary history *David A.Morrison, Annual Research and Review in Biology, 2014*
+- Paper: http://www.journalrepository.org/media/journals/ARRB_32/2014/Jan/Morrison4102013ARRB8230_1.pdf
+- Note: [link]()
 
-***
+## [Identify recombination ]()
 
-## Electronic Medical/Health Records
+### [Average PAC likelihood using SNPs]()
 
-### [Analysis of insurance claims]()
+- Modeling linkage disequilibrium and identifying recombination hotspots using single-nucleotide polymorphism data.  *Genetics 165.4 (2003): 2213-2233.Na Li and Matthew Stephens.*.
+- Paper: http://www.genetics.org/content/genetics/165/4/2213.full.pdf 
+- Note: [link]()
 
-- Wang, K., Gaitsch, H., Poon, H., Cox, N. J., & Rzhetsky, A. (2017). Classification of common human diseases derived from shared genetic and environmental determinants. *Nat. Genet.*
-- Paper: http://www.nature.com/ng/journal/v49/n9/full/ng.3931.html
+### [Integrative Software RDP]()
 
-### [TreeWAS model]()
-
-- Cortes, A., Dendrou, C., Motyer, A., Jostins, L., Vukcevic, D., Dilthey, A., Donnelly, P., Leslie, S., Fugger, L., & McVean, G. (2017). Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank. *Nat. Genet.*
-- Paper: https://www.nature.com/ng/journal/v49/n9/full/ng.3926.html 
-- Software: https://github.com/mcveanlab/TreeWAS
-
-### [Stochastic compartmental model for infection]()
-
-- Cule, M. & Donnelly, P. (2017). Stochastic modelling and inference in electronic hospital databases for the spread of infections: Clostridium difficile transmission in Oxfordshire hospitals 2007–2010. *Ann. Appl. Stat.*
-- Paper: https://projecteuclid.org/euclid.aoas/1500537718
+- RDP4: Detection and analysis of recombination patterns in virus genomes * Virus Evolution, 1(1),(2015)Martin, D. P., Murrell, B., Golden, M., Khoosal, A., & Muhire, B.*
+- Paper: https://academic.oup.com/ve/article/1/1/vev003/2568683
+- Software: http://web.cbio.uct.ac.za/~darren/RDP4Manual.pdf
 
 ***
 
-## Han Chinese Population Genetics
+## Phylogenetic Network construction
 
-### Major depressive disorder GWAS
+### [Algorithm from a given MUL tree]()
 
-- Converge Consortium. (2015). Sparse whole genome sequencing identifies two loci for major depressive disorder. *Nature.*
-- Paper: http://www.nature.com/nature/journal/v523/n7562/full/nature14659.html
+- Reconstructing the evolutionary history of polyploid from multilabeled trees. *Huber, Katharina T, et al. Molecular Biology and Evolution 23.9 (2006): 1784-1791.*
+- Paper: https://academic.oup.com/mbe/article/23/9/1784/1014292 
+- Note: [link]()
 
-### Genetic variation
 
-- Charleston W. K. Chiang, Serghei Mangul, Christopher R. Robles, Warren W. Kretzschmar, Na Cai, Kenneth S. Kendler, Sriram Sankararam, Jonathan Flint. (2017). A comprehensive map of genetic variation in the world's largest ethnic group - Han Chinese. *bioRxiv.*
-- Preprint: https://www.biorxiv.org/content/early/2017/07/13/162982
 
 ***
 
-## Statistical Genetics
+## Book Review
 
-### [An incomplete list of fine mapping methods](fine_mapping)
+### [Book: Phylogenetic networks: concepts, algorithms and applications]()
