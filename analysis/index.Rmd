@@ -14,11 +14,11 @@ If you have any question about this project, please feel free to contact me:
 
 ## Integrative Genomics
 
-### [PECA model]()
+### [Paper review]()
 
-- A survey of combinatorial methods for phylogenetic networks.* Huson and Scornavacca, Genome Biol. Evol., 2011.* 
+- A survey of combinatorial methods for phylogenetic networks. *Huson and Scornavacca, Genome Biol. Evol.2011*. 
 - Paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3017387/pdf/evq077.pdf
-- Note: http://web.stanford.edu/~zduren/PECA/
+- Note: [link](Huson2011paper.html)
 
 ### [Omnigenic model]()
 
