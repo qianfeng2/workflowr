@@ -24,7 +24,7 @@ If you have any question about this project, please feel free to contact me:
 
 - Phylogenetic networks: a review of methods to display evolutionary history *David A.Morrison, Annual Research and Review in Biology, 2014*
 - Paper: http://www.journalrepository.org/media/journals/ARRB_32/2014/Jan/Morrison4102013ARRB8230_1.pdf
-- Note: [link]()
+- Note: [link](morrison2014paper.html)
 
 ## Identify recombination
 
