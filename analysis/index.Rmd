@@ -26,7 +26,7 @@ If you have any question about this project, please feel free to contact me:
 - Paper: http://www.journalrepository.org/media/journals/ARRB_32/2014/Jan/Morrison4102013ARRB8230_1.pdf
 - Note: [link]()
 
-## [Identify recombination ]()
+## Identify recombination
 
 ### [Average PAC likelihood using SNPs]()
 
