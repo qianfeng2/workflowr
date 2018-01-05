@@ -55,6 +55,6 @@ If you have any question about this project, please feel free to contact me:
 ***
 
 ## Book Review
-![Book cover](8.jpg)
+![Book Cover](cover.png)
 
 ### [Book: Phylogenetic networks: concepts, algorithms and applications]()
