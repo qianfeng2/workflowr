@@ -14,27 +14,29 @@ If you have any question about this project, please feel free to contact me:
 
 ## Paper review
 
-### [Huson 2011]()
+### general review papers
+
+#### [Huson 2011]()
 
 - A survey of combinatorial methods for phylogenetic networks. *Huson and Scornavacca, Genome Biol. Evol.2011*. 
 - Paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3017387/pdf/evq077.pdf
 - Note: [link](Huson2011paper.html)
 
-### [David A.Morrison 2014]()
+#### [David A.Morrison 2014]()
 
 - Phylogenetic networks: a review of methods to display evolutionary history *David A.Morrison, Annual Research and Review in Biology, 2014*
 - Paper: http://www.journalrepository.org/media/journals/ARRB_32/2014/Jan/Morrison4102013ARRB8230_1.pdf
 - Note: [link](morrison2014paper.html)
 
-## Identify recombination
+### Identify recombination
 
-### [Average PAC likelihood using SNPs]()
+#### [Average PAC likelihood using SNPs]()
 
 - Modeling linkage disequilibrium and identifying recombination hotspots using single-nucleotide polymorphism data.  *Genetics 165.4 (2003): 2213-2233.Na Li and Matthew Stephens.*.
 - Paper: http://www.genetics.org/content/genetics/165/4/2213.full.pdf 
 - Note: [link]()
 
-### [Integrative Software RDP]()
+#### [Integrative Software RDP]()
 
 - RDP4: Detection and analysis of recombination patterns in virus genomes * Virus Evolution, 1(1),(2015)Martin, D. P., Murrell, B., Golden, M., Khoosal, A., & Muhire, B.*
 - Paper: https://academic.oup.com/ve/article/1/1/vev003/2568683
@@ -42,9 +44,9 @@ If you have any question about this project, please feel free to contact me:
 
 ***
 
-## Phylogenetic Network construction
+### Phylogenetic Network construction
 
-### [Algorithm from a given MUL tree]()
+#### [Algorithm from a given MUL tree]()
 
 - Reconstructing the evolutionary history of polyploid from multilabeled trees. *Huber, Katharina T, et al. Molecular Biology and Evolution 23.9 (2006): 1784-1791.*
 - Paper: https://academic.oup.com/mbe/article/23/9/1784/1014292 
