@@ -315,14 +315,14 @@ shared across the workflowr files. -->
 <p><strong>Last updated:</strong> 2018-01-05</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> a9dc650</p>
+<p><strong>Code version:</strong> 34f9052</p>
 <!-- Add your analysis here -->
 <p>Polyploid species played a major role in the evolution of plants. In this paper, we focus on present all possible phylogenetic networks from a multilabeled tree that are guaranteed to have minimal number of interaction nodes.</p>
-<p><img src="Figure4.gif" alt="Figure4" /> <em>Figure 2 from original paper</em></p>
+<p><img src="Figure4.jpg" alt="Figure4" /> <em>Figure 2 from original paper</em></p>
 <p>Based on Fig.2 in this paper, we can see (b)(c)(d) are all phylogenetic networks that exhibit (a), however, we will use efficient algorithm to draw a phylogenetic network like (d) rather than (b) and (c).</p>
 <p>From Fig.3 in this paper, we can see subtrees <span class="math inline">\(T_{(u)}\)</span>,<span class="math inline">\(T_{(v)}\)</span> and <span class="math inline">\(T_{(w)}\)</span> are maximal inextendible. Fours useful concepts are subtree, equivalent, inextendible and maximal inextendible. In fact, we will focus on how to find maximal inextendible subtrees from a given MUL tree in actual algorithm. Note that the definition of <strong>inextendible</strong> is not clear for me, so I borrowed another one in the paper of <a href="https://link.springer.com/article/10.1007%2Fs00285-005-0365-z?LI=true">Huber KT and Moulton</a> to get a better understanding this terminology.</p>
 <p><strong>inextendible</strong>: suppose <span class="math inline">\(T\)</span> is MUL tree, for every vertex <span class="math inline">\(v \in V(T)\)</span> that is not the root of T we denote the parent of <span class="math inline">\(v\)</span> by <span class="math inline">\(\bar v\)</span>, suppose <span class="math inline">\(T&#39;\)</span> is a sub MUL tree with vertex <span class="math inline">\(v\)</span>, we say <span class="math inline">\(T&#39;\)</span> is <strong>inextendible</strong> if there existed another sub MUL tree <span class="math inline">\(T&#39;&#39;\)</span> with root vertex <span class="math inline">\(w\)</span> so that <span class="math inline">\(T&#39;&#39;\)</span> is isomorphic to <span class="math inline">\(T&#39;\)</span>, and <span class="math inline">\(T(\bar v)\)</span> is not isomorphic to <span class="math inline">\(T(\bar w)\)</span>.</p>
-<p><img src="Figure5.gif" /> <em>Figure 3 from original paper</em></p>
+<p><img src="Figure5.jpg" /> <em>Figure 3 from original paper</em></p>
 <p>So there would be a <strong><em>contradiction</em></strong> in the statement of inextendible definition. Take a look at Fig.3 again, whether on earth each subtree having leaves labeled with <code>b</code> and <code>c</code> is inextendible or not ?</p>
 <p>The core of this algorithm showed in Fig.4 is to merge and prune maximal inextendible subtrees and its equivalent subtrees, this process is repeated until a network is obtained that contains no repeated labeled leaves.Unfortunately, I could understand how do they find the maximal inextendible subtrees by height list <span class="math inline">\(H\)</span> and code <span class="math inline">\(c(v)\)</span> in the initial step.</p>
 <p>A noticeable limitation is when MUL tree contains polytomies showed in Fig.6,using this presented constructing methods would lead to several different phylogenetic networks.</p>
