@@ -5,15 +5,8 @@ output:
     toc: false
 ---
 
-Currently the project website is licensed under the
-[Creative Commons Attribution-NoDerivatives 4.0 International License (CC BY-ND 4.0)][site-license].
-This means you are free to include content from this site in your presentation, blog, or social media posts, as long you cite it.
-The "no derivatives" (ND) clause means you cannot modify the results and distribute them.
-
-The source code in the notebook is licensed under the [GNU General Public License, version 3.0 (GPLv3)][code-license].
+All source code and software in this repository are made available under the terms of the [MIT license](https://opensource.org/licenses/mit-license.html).
 
 If you use any results from this site, please explicitly acknowledge that
-the results are retrieved from https://github.com/xiangzhu/paper-reading .
+the results are retrieved from https://qianfeng2.github.io/workflowr/ .
 
-[code-license]: https://www.gnu.org/licenses/gpl-3.0.txt
-[site-license]: https://creativecommons.org/licenses/by-nd/4.0/
