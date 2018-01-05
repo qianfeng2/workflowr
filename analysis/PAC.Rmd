@@ -1,0 +1,82 @@
+---
+title: "Average PAC likelihood"
+author: "Qian Feng"
+date: 2018-01-04
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+The patterns of Linkage Disequilibrium(LD) are the result of genetic factors and demographic history in a population. Particularly, recombination plays a key role relating with the patterns of LD. For example, when a recombination occurs between two loci, it will reduce the dependence between two alleles, then reduce LD. In this article, authors propose a new statistical method to estimate the underlying recombination rate to get a better review of pattern of LD. It is also meaningful in understanding and interpreting patterns of LD and LD mapping. 
+
+Our model is based on  
+\begin{equation}
+P(h_{1},...h_{n} | \rho )=P(h_{1} | \rho)P(h_{2} | h_{1};\rho),...P(h_{n} | h_{1},...h_{n-1};\rho)
+\end{equation}
+where $h_{1},...h_{n}$ denote $n$ sampled haplotypes, $\rho$ is the recombination parameter. In this new proposed method, we substitute an *approximation* (noted as $\widehat{\pi}$) for those conditional distributions in right term of (1), namely
+\begin{equation}
+P(h_{1},...h_{n} | \rho ) \approx \widehat{\pi}(h_{1} | \rho) \widehat{\pi}(h_{2} | h_{1};\rho),...\widehat{\pi}(h_{n} | h_{1},...h_{n-1};\rho)
+\end{equation}
+
+The right term above is what we called likelihood $L_{PAC}$, through maximizing this likelihood, we could get the recombination parameter $\rho$.
+
+How to compute $\widehat{\pi}$ is the key point in this article. In fact, according to the appendix A, the core is the utilize of forward algorithm in HMM.
+ 
+Let $X_{j}$ denote  which haplotype $h_{k+1}$ copies at site $j$. $X_{j}$ is a Markov model on $\left\{1,2,...,k\right\}$ with emission probability $P(X_{1}=x)=\frac{1}{k} (x \in \left\{1,2,...k \right\})$, the transition probability is  as follows
+
+\begin{equation}
+P(X_{j+1}=x\prime | X_{j}=x ) =
+\begin{cases}
+p_{j} +\frac{1}{k}(1-p_{j})&\mbox{$x\prime=x$}\\
+\frac{1}{k}(1-p_{j})&\mbox {otherwise}
+\end{cases}
+\end{equation}
+where $p_{j}=exp(-\frac{\rho_{j}d_{j}}{k})$, $rho_{j}=4Nc_{j}$, $N$ is the effective population size ,and $c_{j}$ is the recombination rate per physical distance, $d_{j}$ is the distance between marker $j$ and marker $j+1$.
+
+Computing $\widehat{\pi}(h_{k+1} | h_{1},...h_{k};\rho)$ requires a sum over of all possible values of $X_{j}$, this is why we exploit forward algorithm to compute it recursively.
+
+\begin{equation}
+\pi(h_{k+1} | h_{1},h_{2},...h_{k})=\sum_{x=1}^{k} \alpha_{s}(x)
+\end{equation}
+
+\begin{equation}
+\alpha_{j+1}(x)=e_{j+1}(x)\sum_{x\prime=1}^{k}\alpha_{j}(x\prime)P(X_{j+1}=x | X_{j}=x\prime)
+\end{equation}
+
+A noticeable point in this article is that $c_{j}$ has different set in different models. When the recombination is constant, ie.$c_{j}=\bar {c}$ , we only have one parameter $\bar{c}$, in this case, we use the **golden bisection search** when maximizing the likelihood. When the recombination parameter is variable, ad hoc two-stage strategy is used to estimate $c_{j}$ and $\lambda_{j}$, but we need to know the ad hoc two-stage approach is not guaranteed to get reliably global maximum.
+
+$\bigstar$ What on earth is the **ad hoc** two-stage approach? Since authors do not pursue here, why they do not use MCMC mentioned before?
+
+Answers given by **Heejung**: It is about Baysian theory. Through maximizing product of likelihood and prior distribution to get the estimation.
+
+\begin{equation}
+P(\mu | X_{1},X_{2}...X_{n})=\frac{P(X_{1},X_{2}...X_{n} | \mu)P(\mu)}{P(X_{1},X_{2}...X_{n})}
+\end{equation}
+
+In summary, this algorithm has several advantages and a small disadvantage. It is computationally fast, able to avoid the assumption that LD has the "block-like" structure, also able to consider all loci simultaneous rather than pairwise. However, an unwelcoming feature of this method is it does not consider the order of haplotypes which other currently available algorithms take account. Fortunately, by averaging the $L_{PAC}$ over random orders of the haplotypes, authors find related  performance is not significantly sensitive to the orders used.  
+
+
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
