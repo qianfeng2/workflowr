@@ -1,0 +1,91 @@
+---
+title: "Phylogenetic network"
+author: "Qian Feng"
+date: 2018-01-04
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+## Basic concepts
+Reassortment is the mixing of the genetic material of a species into new combinations in different individuals. It is particularly used when two similar viruses that are infecting the same cell exchange genetic material.
+
+There are several interesting concepts in graph theory. Please look at the Figure 1.1, 1.2 and 1.3.
+
+- The **degree**of node $u$ is the sum of its indegree and outdegree.
+
+-  A **biconnected components** is the maximal subgraph that is induced by set of edges and doesn't contain a cut node. A good example is in Figure 1.3.
+
+- A graph $G=(V,E)$ is called **bipartite** if and only if its set of nodes can be partitioned into subsets $V_{1}$, $V_{2}$,with $V=V_{1}\cup V_{2}$ and $V_{1}\cap V_{2}=\emptyset$, such that for every edge $e \in E$,one of the endpoints lies in $V_{1}$, another endpoint lies in $V_{2}$.
+Explain Exercise 1.2.3.
+
+-  Two nodes $v$ and $w$ are **imcomparable**, if neither node is lower than other; similarily, two edges $e$ and $f$ are imcomparable if neither is lower than other;
+
+- Different **traversals** give rise to different orders in which nodes are examined. Pay attention to preorder, postorder and breadth-first traversal in Figure 1.7.
+In particular, breadth-first traversal, please see reference [here](https://baike.baidu.com/item/??/9796023?fr=aladdin).
+
+
+
+PS: Nodes are also called vertices, edges are also called branches or arcs.
+       Bifurcating Tree = Resolve Tree = Binary Tree
+       
+Let $\chi=\left\{x_{1},x_{2},...x_{n} \right\}$ be a set of taxa, a **cluster** is any subset of $\chi$,excluding the empty set $\emptyset$ and full set $\chi$. The ultimate goal of phylogenetic analysis is to compute a set of clusters on 
+$\chi$ such that each cluster is monophyletic(also called clade. Monophyletic group contains all descendants of the common ancestor and the ancestor itself).
+
+A **split** is any bipartitioning of $\chi$ into two non-empty subsets $A$ and $B$ of $\chi$, such that $\chi=A \cup B$ and $A\cap B=\emptyset$.
+
+In phylogenetic analysis, a set of taxa $\chi=\left\{x_{1},x_{2},...x_{n} \right\}$ is often represented by a set of molecular sequences $A=\left\{a_{1},a_{2},...a_{n} \right\}$ where $a_{i}$ comes from taxon $x_{i}$ and correspond to some specific genes or locus. We also need to ensure that the sequences are ***homologous***, that is, have evolved from a common ancestor sequence.
+
+In **Pairwise sequence alignment**, with the help of substitution matrix, for example the BLOSSUM matrix, which assigns empirically score, we could calculate the score of each pair of residues and then sum over scores among all pairs would be the score of whole alignment.
+
+Sequence are often aligned by inserting gaps into each sequence shown in Figure 2.6 such that all sequences have same length $m$, forming a **multiple sequence alignment ** of length $m$. Our goal is to find a multiple sequence alignment that achieves the optimal score according to an appropriate score scheme. *Progressive method* as a heuristic approach, is used to align multiple sequences, its outline is shown in Figure 2.7. The core is to align a pair of similar sequences into *profiles*, then align profiles into final multiple sequence alignment.
+
+Let $M$ be a multiple sequence alignment on $\chi$, each column of $M$ is called a character, each symbol that occurs in this column is called a character state.
+
+## Phylogenetic trees
+Now we are introducing some basic concepts and main methods for inferring phylogenetic trees.
+
+Phylogenetic trees are usually computed from molecular sequences. They not only could uncover the relationship between different species or taxa, but also have many other applications. For instance, they are used to determine the age and the rate of diversification. In sequence-analysis method, they are allowed  **phylogenetic footprinting**.
+
+In practice, there are two types of analysis after the initial multiple sequence alignment: distance-based analysis and sequence-based one. Its outline is shown in Figure 3.1 at page 24.
+
+### Definition Phylogenetic Tree
+
+Given a set of taxa $\chi$, this is a phylogenetic tree $T=(V,E)$ , its all nodes have degree $\neq$ 2, together with a taxon labeling $\lambda:\chi\to V$that assigns actually one taxon to every leave and none to internal nodes.
+
+From a theoretical and algorithmic point of view, unrooted phylogenetic trees are much more easier than rooted ones, however, in biology, rooted phylogenetic trees are usually more of interest. A phylogenetic tree is called an edge-weighted tree if we are given a map $\omega$ that assigns a non-negative weight or length $\omega(e)$ to every edge e of the tree. In drawings, we usually use length of the edge to indicate the scale rather than write the lengths explicitly next to edges. 
+
+Jukes-Cantor model tells us the probability formula of change during time $t$ or along the edge, given the mutation rate. This model of DNA evolution assumes the fours bases (A,C,G and T) occur with equal frequencies(0.25) and change from one base to another occurs at the same rate. If we relax the conditions, for example, let the bases occur at different and arbitrary rates (although they have to sum to 1), change rates in transitions and transversions, then we could get more generate model, anyway, they are both special cases of general time reversible model. 
+
+Classical phylogenetic trees construction approaches consist of two following types:
+
+- **Sequence-based method** usually searches for best phylogenetic tree which can optimally explain the given multiple sequence alignment $M$. We discuss the three main approaches about it: maximum parsimony, ML and Bayesian inference.
+- **Distance-based method** usually constructs phylogenetic tree from a given a distance matrix $D$.
+
+
+Maximum parsimony method is to look for a phylogenetic tree that explains the given set of aligned sequences using a minimum number of evolutionary events.
+
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
