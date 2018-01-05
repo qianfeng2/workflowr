@@ -48,12 +48,11 @@ If you have any question about this project, please feel free to contact me:
 
 - Reconstructing the evolutionary history of polyploid from multilabeled trees. *Huber, Katharina T, et al. Molecular Biology and Evolution 23.9 (2006): 1784-1791.*
 - Paper: https://academic.oup.com/mbe/article/23/9/1784/1014292 
-- Note: [link]()
-
-![testpig](8.jpg)
+- Note: [link](MUL.html)
 
 ***
 
 ## Book Review
+![Book cover](8.jpg)
 
 ### [Book: Phylogenetic networks: concepts, algorithms and applications]()
