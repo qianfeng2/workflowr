@@ -11,7 +11,7 @@ navbar:
       href: license.html
   right:
     - icon: fa-github
-      href: https://github.com/xiangzhu/paper-reading
+      href: https://github.com/qianfeng2/workflowr
 output:
   html_document:
     toc: true
