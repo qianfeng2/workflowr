@@ -10,7 +10,7 @@ navbar:
     - text: "License"
       href: license.html
   right:
-    - icon: fa-github
+    - text: source
       href: https://github.com/qianfeng2/workflowr
 output:
   html_document:
