@@ -27,7 +27,7 @@ knitr::read_chunk("chunks.R")
 <!-- Add your analysis here -->
 Polyploid species played a major role in the evolution of plants. In this paper, we focus on present all possible phylogenetic networks from a multilabeled tree that are guaranteed to have minimal number of interaction nodes.
 
-![Figure4](Figure4.gif)
+![Figure4](Figure4.jpg)
 *Figure 2 from original paper*
 
 
@@ -37,7 +37,7 @@ From Fig.3 in this paper, we can see subtrees $T_{(u)}$,$T_{(v)}$ and $T_{(w)}$ 
 
 **inextendible**: suppose $T$ is MUL tree, for every vertex $v \in V(T)$ that is not the root of T we denote the parent of $v$ by $\bar v$, suppose $T'$ is a sub MUL tree with vertex $v$, we say  $T'$ is **inextendible** if there existed another sub MUL tree $T''$ with root vertex $w$ so that $T''$ is isomorphic to $T'$, and $T(\bar v)$ is not  isomorphic to $T(\bar w)$.
 
-![](Figure5.gif)
+![](Figure5.jpg)
 *Figure 3 from original paper*
 
 So there would be a ***contradiction*** in the statement of inextendible definition. Take a look at Fig.3 again, whether on earth each subtree having leaves labeled with ``b`` and  ``c`` is inextendible or not ?
