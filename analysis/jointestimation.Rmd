@@ -1,0 +1,38 @@
+---
+title: "Joint bayesian estimation of alignment and phylogeny"
+author: "Qian Feng"
+date: 2018-01-16
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+In this paper, authors propose a novel model to estimate multiple sequence alignment and phylogenetic tree reconstruction simultaneously. They operate in Bayesian framework and use MCMC methods.
+
+In general, researchers first need to finish multiple sequence alignment, and then use it to reconstruct the phylogeny. However, if the alignment contains ambiguous regions, this would lead to inaccurate result. A normal technique is to remove these regions, hence, leading to a loss of a large fraction of informative sites. due to this, researchers come up with a simple method: split ambiguous columns into groups of residues in which homology is unambiguous, then, place them in separate columns, yet, it is still worth noting that identifying these ambiguous regions is too subjective.
+
+There are a number of techniques developed to get a better use of ambiguous alignment. One technique, known as elision, concatenates a set of near-optimal alignments into a larger alignment and use them for reconstructing phylogeny. However, elision treat all the near optimal alignment equally instead of weighted, as a consequence, it may be not so good. Another technique, known as optimization alignment, involves estimation of alignment and phylogenies simultaneously with parsimony framework. One problem of optimization alignment is the measure of uncertainty is hard to obtain since standard bootstrap couldn't be applied due to the dependent alignment columns. Method in this paper not only weighted the alignment naturally, but also assess the confidence using posterior probability.
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```

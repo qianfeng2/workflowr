@@ -56,7 +56,7 @@ If you have any question about this project, please feel free to contact me:
 
 - Joint Bayesian estimation of alignment and phylogeny. *Redelings, Benjamin D., and Marc A. Suchard. Systematic biology 54.3 (2005): 401-418.*
 - Paper: https://academic.oup.com/sysbio/article/54/3/401/1727336 
-- Note: [link]()
+- Note: [link](jointestimation.html)
 ***
 
 ## Book Review
