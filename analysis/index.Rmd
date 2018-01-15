@@ -42,7 +42,7 @@ If you have any question about this project, please feel free to contact me:
 - Paper: https://academic.oup.com/ve/article/1/1/vev003/2568683
 - Software: http://web.cbio.uct.ac.za/~darren/RDP4Manual.pdf
 - Note: [link]()
-***
+
 
 ### Phylogenetic Network construction
 
