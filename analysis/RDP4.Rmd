@@ -1,0 +1,53 @@
+---
+title: "RDP4 note"
+author: "Qian Feng"
+date: 2018-01-16
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+RDP4 is the latest version of recombination detection program in a set of aligned sequences. RDP4 could not do multiple sequence alignment, but from its instruction manual, it provides three reliable sequence alignment tools: ClustalX/W, MUSCLE, POA for small, medium and large datasets respectively(small means fewer than $100$ sequences, large means more than $100$ sequences).
+
+
+1. Firstly, we need to compile a good dataset. Although there is no formula to tell us the optimal numbers and lengths of sequences for optimal recombination detection, some procedures are needed to ensure a reasonable good dataset. 
+
+2. After getting a suitable datasets, next step is to make a good alignment, which is essential for recombination analysis. It is not recommended that any pair of sequences share less than 60% nucleotide sequence identity, ideally this value is greater than 70%. Multiple sequence alignment tools will occasionally make some alignment errors, that's why we need to realign subsections of alignment to rectify these errors.
+
+* In general, after making a preliminary alignment of the sequences, if these are small sequences, we could use an alignment editor such as MEGA or IMPALE to check the accuracy of completed alignment by eyes, if they are large datasets, using the sub-sequence realignment tool in MEGA or IMPALE with different alignment parameter settings. It is strongly recommended that any unalignable (or just barely alignable) tracts be either deleted from the alignment or shifted/staggered.
+
+3. prelimnary  scan. We need to set up some parameters before general scanning. First one is to specify whether the sequence being examined is linear or circular. The following picture 1 is an example of circular sequence.
+
+![Figure 1 ](p3225.jpg)
+*Figure 1 originally from Chinese [website](http://blog.csdn.net/wsnbb123456789/article/details/49102521)*
+
+
+* We always read a circular sequence in the clockwise direction, then it should be "CGAGTCAGCT" in the above example. Of course there can be many linear sequences that are obtained from such a circular sequence, by cutting any place of the circular sequence. 
+
+4.  We can click ``open`` and load alignment files, RDP4 could recognize these different file formats: FASTA, PHYLIP, GDE, CLUSTAL, GCG,NEXUS,MEGA, DNAMAN, .pdb. After general settings, click ``Run`` button in the command button panel.
+
+
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
