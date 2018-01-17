@@ -308,52 +308,35 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-16</p>
+<p><strong>Last updated:</strong> 2018-01-17</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 1885168</p>
+<p><strong>Code version:</strong> e363e19</p>
 <!-- Add your analysis here -->
 <p>RDP4 is the latest version of recombination detection program in a set of aligned sequences. RDP4 could not do multiple sequence alignment, but from its instruction manual, it provides three reliable sequence alignment tools: ClustalX/W, MUSCLE, POA for small, medium and large datasets respectively(small means fewer than <span class="math inline">\(100\)</span> sequences, large means more than <span class="math inline">\(100\)</span> sequences).</p>
-<ol type="1">
-<li><p>Firstly, we need to compile a good dataset. Although there is no formula to tell us the optimal numbers and lengths of sequences for optimal recombination detection, some procedures are needed to ensure a reasonable good dataset.</p></li>
-<li><p>After getting a suitable datasets, next step is to make a good alignment, which is essential for recombination analysis. It is not recommended that any pair of sequences share less than 60% nucleotide sequence identity, ideally this value is greater than 70%. Multiple sequence alignment tools will occasionally make some alignment errors, that’s why we need to realign subsections of alignment to rectify these errors.</p></li>
-</ol>
-<ul>
-<li>In general, after making a preliminary alignment of the sequences, if these are small sequences, we could use an alignment editor such as MEGA or IMPALE to check the accuracy of completed alignment by eyes, if they are large datasets, using the sub-sequence realignment tool in MEGA or IMPALE with different alignment parameter settings. It is strongly recommended that any unalignable (or just barely alignable) tracts be either deleted from the alignment or shifted/staggered.</li>
-</ul>
-<ol start="3" type="1">
-<li>prelimnary scan. We need to set up some parameters before general scanning. First one is to specify whether the sequence being examined is linear or circular. The following picture 1 is an example of circular sequence.</li>
-</ol>
+<section id="firstly-we-need-to-compile-a-good-dataset." class="level3">
+<h3><strong>1. Firstly, we need to compile a good dataset.</strong></h3>
+<p>Although there is no formula to tell us the optimal numbers and lengths of sequences for optimal recombination detection, some procedures are needed to ensure a reasonable good dataset.</p>
+</section>
+<section id="next-step-is-to-make-a-good-alignment-which-is-essential-for-recombination-analysis." class="level3">
+<h3><strong>2. Next step is to make a good alignment, which is essential for recombination analysis.</strong></h3>
+<p>It is not recommended that any pair of sequences share less than 60% nucleotide sequence identity, ideally this value is greater than 70%. Multiple sequence alignment tools will occasionally make some alignment errors, that’s why we need to realign subsections of alignment to rectify these errors.</p>
+<p>In general, after making a preliminary alignment of the sequences, if these are small sequences, we could use an alignment editor such as MEGA or IMPALE to check the accuracy of completed alignment by eyes, if they are large datasets, using the sub-sequence realignment tool in MEGA or IMPALE with different alignment parameter settings. It is strongly recommended that any unalignable (or just barely alignable) tracts be either deleted from the alignment or shifted/staggered.</p>
+</section>
+<section id="prelimnary-scan." class="level3">
+<h3><strong>3. Prelimnary scan.</strong></h3>
+<p>We can click <code>open</code> and load alignment files, RDP4 could recognize these different file formats: FASTA, PHYLIP, GDE, CLUSTAL, GCG,NEXUS,MEGA, DNAMAN, .pdb. After general settings, click <code>Run</code> button in the command button panel.</p>
+<p>We need to set up some parameters before general scanning. First one is to specify whether the sequence being examined is linear or circular. The following picture 1 is an example of circular sequence.</p>
 <p><img src="p3225.jpg" alt="Figure 1" /> <em>Figure 1 originally from Chinese <a href="http://blog.csdn.net/wsnbb123456789/article/details/49102521">website</a></em></p>
-<ul>
-<li>We always read a circular sequence in the clockwise direction, then it should be “CGAGTCAGCT” in the above example. Of course there can be many linear sequences that are obtained from such a circular sequence, by cutting any place of the circular sequence.</li>
-</ul>
-<ol start="4" type="1">
-<li>We can click <code>open</code> and load alignment files, RDP4 could recognize these different file formats: FASTA, PHYLIP, GDE, CLUSTAL, GCG,NEXUS,MEGA, DNAMAN, .pdb. After general settings, click <code>Run</code> button in the command button panel.</li>
-</ol>
-<section id="session-information" class="level2">
-<h2>Session information</h2>
-<!-- Insert the session information into the document -->
-<pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.4.2 (2017-09-28)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: macOS Sierra 10.12.1
-
-Matrix products: default
-BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
-
-locale:
-[1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-loaded via a namespace (and not attached):
- [1] compiler_3.4.2  backports_1.1.1 magrittr_1.5    rprojroot_1.2  
- [5] tools_3.4.2     htmltools_0.3.6 yaml_2.1.15     Rcpp_0.12.14   
- [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.17      git2r_0.19.0   
-[13] stringr_1.2.0   digest_0.6.13   evaluate_0.10.1</code></pre>
+<p>We always read a circular sequence in the clockwise direction, then it should be “CGAGTCAGCT” in the above example. Of course there can be many linear sequences that are obtained from such a circular sequence, by cutting any place of the circular sequence.</p>
+<p>Move to <code>Analysis Sequences Using</code> in <code>general</code> button, it is strongly recommended to use the default setting. Pay attention to the Botscan and Siscann, there are two boxes in front of it separately. By default these two will automatically check the recombination signals detected by other methods,if we click the first box, then it will force their use to explore new signals, but be warned that it will increase analysis time dramatically. By the way, LARD method is also only used for checking signals and suitable for less than pretty small dataset (less than 20 sequences).</p>
+<p>After general settings, click <code>Run</code> button in the command button panel.</p>
+</section>
+<section id="refine-preliminary-recombination." class="level3">
+<h3><strong>4. Refine Preliminary recombination.</strong></h3>
+<p>It is important to be aware that RDP4 can get things horribly wrong, such as inaccurate identification of breakpoint positions. Unfortunately, there is no automated tools to judge whether our results are true.</p>
+<p>In order to check the accuracy of estimation breakpoints estimation, best graphs are shown in the bottom left panel by choosing <code>Check using</code> <code>MAXCH</code>and <code>CHIMER</code>. Breakpoints are displayed in the peak of these two curves. However, if the peaks doesn’t match the border of recombinant, this doesn’t mean this inferred positions are wrong, it does mean there is a degree of uncertainty regarding this position. By the way, considering <code>Confirmation Table</code> in Recombination Info at top right panel is also a good way to assess the accuracy of estimation.</p>
+<p>Remember this program could crash at any time so we should regularly save our results.</p>
 </section>
 
 <script type="text/x-mathjax-config">
