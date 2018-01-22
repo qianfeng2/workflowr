@@ -25,14 +25,70 @@ knitr::read_chunk("chunks.R")
 ```
 
 <!-- Add your analysis here -->
-In this paper, authors propose a novel model to estimate multiple sequence alignment and phylogenetic tree reconstruction simultaneously. They operate in Bayesian framework and use MCMC methods.
+In this paper, authors propose a novel model to estimate multiple sequence alignment , phylogenetic tree reconstruction and their support simultaneously. They operate in Bayesian framework and use MCMC methods.
 
-In general, researchers first need to finish multiple sequence alignment, and then use it to reconstruct the phylogeny. However, if the alignment contains ambiguous regions, this would lead to inaccurate result. A normal technique is to remove these regions, hence, leading to a loss of a large fraction of informative sites. due to this, researchers come up with a simple method: split ambiguous columns into groups of residues in which homology is unambiguous, then, place them in separate columns, yet, it is still worth noting that identifying these ambiguous regions is too subjective.
+In general, researchers first need to finish multiple sequence alignment, and then use it to reconstruct the phylogeny. However, if the alignment contains ambiguous regions particular like in distantly related sequences, this would lead to inaccurate result. A normal technique is to remove these regions, hence, leading to a loss of a large fraction of informative sites. Due to this, researchers come up with a simple method: split ambiguous columns into groups of residues in which homology is unambiguous, then, place them in separate columns, yet, it is still worth noting that identifying these ambiguous regions is too subjective.
 
-There are a number of techniques developed to get a better use of ambiguous alignment. One technique, known as elision, concatenates a set of near-optimal alignments into a larger alignment and use them for reconstructing phylogeny. However, elision treat all the near optimal alignment equally instead of weighted, as a consequence, it may be not so good. Another technique, known as optimization alignment, involves estimation of alignment and phylogenies simultaneously with parsimony framework. One problem of optimization alignment is the measure of uncertainty is hard to obtain since standard bootstrap couldn't be applied due to the dependent alignment columns. Method in this paper not only weighted the alignment naturally, but also assess the confidence using posterior probability.
+There are a number of techniques are developed to get a better use of ambiguous alignment. One technique, known as elision, concatenates a set of near-optimal alignments into a larger alignment and use them for reconstructing phylogeny. However, elision treat all the near optimal alignment equally instead of weighted, as a consequence, it may be not so good. Another technique, known as optimization alignment, involves estimation of alignment and phylogenies simultaneously with parsimony framework. One problem of optimization alignment is the measure of uncertainty is hard to obtain since standard bootstrap couldn't be applied due to the dependent alignment columns. Method in this paper not only weighted the alignment naturally, but also assess the confidence using posterior probability.
 
-## Session information
+Advantages of joint estimation are as follows: one thing is joint estimation doesn't require extra guide tree, this contrast with alignment with progressive alignment are biased and need a guide tree. Another thing is joint estimation could provide more accurate substitution and indel (inseration/deletion) models, in scoring alignment by extended substitution model, in using shared indels to group taxa on a tree.
 
-<!-- Insert the session information into the document -->
-```{r session-info}
-```
+In developing indel model, there is a simplified assumption: indel event occurs independent on each branch. The reason of this is it allows us to use a simple pair-HMM to model the alignment. In addition, insertions and deletions are equally likely and sequence lengths do not grow or shrink over time. In substitution model, evolution is independent across columns of $f$ and each branch.
+
+MCMC needs to sample from posterior distribution of the alignment, phylogeny and model parameters given only unaligned sequences. In this paper, researchers introduce a new transition kernel to resample the topology and alignment that improves mixing efficiency, allowing chains to converge even when start with an arbitrary alignment.  
+
+Multiple sequence alignment $A$ is actually a matrix $f$, it specifies which letters from sequences are homologous by arranging homologous letters into the same column in this matrix. 
+
+* Table:  This is an annotation list
+
+Item     Name       Meaning
+------ ----------   -------
+1        $Y$        a set of $n$ homologous molecular sequences
+2        $A$        multiple sequence alignment
+3       $\tau$      unrooted tree topology
+4        $T$        branch length
+5        $\Theta$   substitution process parameters
+6        $\Lambda$  indel process parameters      
+7        $N$        total number of nodes in $\tau$: $N=2n-2$
+8        $B$        total number of branches in $\tau$: $B=2n-3$
+9        $\gamma$   distribution of ancestral letters at the root node
+10       $b$        every branch
+11       $\rho(b)$  parent branch for b
+12       $n(b)$     node in $\tau$ shared by the branch b and $\rho(b)$
+
+
+Therefore, the whole state space $\Omega$ is composed of points: $\omega=(Y, A, \tau, T,\Theta,\Lambda )$.
+
+## Substitution model
+Likelihood $P(Y | A,\tau,T,\Theta,\Lambda)$ is given in substitution model, before getting this result, we need to accomplish two tasks, first one is to specify how $A$ arranges $Y$ into matrix $f$, next one is to specify the probabilistic model on the columns of $f$. Figure 1 in the original paper solves above first task, the tuples at the leaf node within a column in matrix $f$ are from a multinomial distribution which addresses second task mentioned before. An worth noting thing is there is **Felsenstein wildcards** in matrix $f$ which represents internal nodes that are present but unobserved denoted by $*$. The full likelihood is by multiplying likelihood of each column using peeling algorithm, meanwhile Felsenstein wildcards and gaps are treated as missing data.
+
+A Markov model is reversible equivalent to hold the detail balance equation:
+\begin{equation}
+\pi_{i}p_{ij}=\pi_{j}p_{ji}
+\end{equation}
+
+## Gap model 
+We describe prior of indel process parameters $\Lambda$ in gap model. In gap model, $A$ could be represented as a tuple pairwise alignments: $(A^{(1)}, A^{(2)},..., A^{(B)})$, we replace the alignment prior (equation(11)) with standard prior (equation(10)), then after calculating this modified posterior, Gibbs sample from it using DP programs, detailed DP algorithm is provided in Appendix.
+
+Three parameters are used in pair-HMM, including $\delta$,$\epsilon$and $\zeta$,parameter $\delta$ refers to the probability of an indel in either sequence, we assume double-exponential distribution on the approximate log odds of $\delta$; $\epsilon$ refers to the probability of extending an existing gap, and exponential distribution is assumed, for $\zeta$, it means the transition probability from any state to the end state, in our example, $\zeta=1/1000$.
+
+## MCMC sampling process 
+
+In MCMC sampling process, researchers employ a **random scan Metropolis-within-Gibbs** approach. In every iteration, they attempt to sample from every model parameters at least once. Indel parameters are resampled more frequently than substitution parameters. NNI is used to update topology $\tau$, it will move across every internal node at least once per iteration.
+
+In whole, topology $\tau$ is updated by a number of MH steps, each alters only part of the topology. Once a topology is chosen, the internal nodes are resampled from the DP matrix, after this step, alignment $A$ and topology $\tau$ is resampled again. The MH acceptance probability is given in equation (12). This is an 1D DP problem.
+
+Regarding to alignment sampling, traditional two MCMC transition kernels are not efficient enough in some circumstances shown in Figure 4, researchers decide to resample the alignment along a branch and the sequence at one end of this branch in the same step, this is a 2D DP problem.
+
+Alignment uncertainty plot (AU) is introduced to depict the alignment variability, it is drawn from the posterior alignment, and provides a valuable tool to assess alignment ambiguity. 
+
+We show this modified MCMC algorithm converges to equilibrium distribution more quickly than previously available MCMC transition kernel. This allows us to choose randomly one alignment rather than start from an estimated alignment via other software like ClustalW, which is the first advantage, another benefit is that it would decrease burn-in time and less autocorrelation. In order to assess the convergence of continuous parameters, Gelman-Rubin R statistics is employed, results suggesting each chain converges to the same distribution, 95% Baysian credible intervals about posterior probability (PP) are also given in table 2. 
+
+## BAli-Phy show 
+BAli-Phy is a C++ software providing samples from posterior of alignment and phylogeny model. I will show it step by step to interested readers. This software please click 
+[here](http://www.bali-phy.org/index.php).
+
+Anyway, even though this framework enjoys great advantages in estimating alignment and phylogeny at the same time,  there exist some limitations as well. First is the parameters prior are not sufficient  for biological meaning. Another shortcoming is indel process parameters are the same along each branch, which contrasts with ClustalW. In ClustalW, there are a function of branch lengths.
+
+It is a challenge for me to understand equation (4) and (6) in this paper fully.
+
