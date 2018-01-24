@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-23</p>
+<p><strong>Last updated:</strong> 2018-01-25</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 8a5e50f</p>
+<p><strong>Code version:</strong> 3a6eca1</p>
 <!-- Add your analysis here -->
 <p>In this paper, authors propose a novel model to estimate multiple sequence alignment , phylogenetic tree reconstruction and their support simultaneously. They operate in Bayesian framework and use MCMC methods.</p>
 <p>In general, researchers first need to finish multiple sequence alignment, and then use it to reconstruct the phylogeny. However, if the alignment contains ambiguous regions particular like in distantly related sequences, this would lead to inaccurate result. A normal technique is to remove these regions, hence, leading to a loss of a large fraction of informative sites. Due to this, researchers come up with a simple method: split ambiguous columns into groups of residues in which homology is unambiguous, then, place them in separate columns, yet, it is still worth noting that identifying these ambiguous regions is too subjective.</p>
@@ -418,8 +418,59 @@ shared across the workflowr files. -->
 <section id="bali-phy-show" class="level2">
 <h2>BAli-Phy show</h2>
 <p>BAli-Phy is a C++ software providing samples from posterior of alignment and phylogeny model. I will show it step by step to interested readers. This software please click <a href="http://www.bali-phy.org/index.php">here</a>.</p>
+<p>Firstly install the BAli-Phy using homebrew based on its <a href="http://www.bali-phy.org/README.html#running">User’s Guide</a> in this software website. We will run commands in terminal. Type this command to check its version: <code>bali-phy --version</code></p>
+<p>Next step is to install programs used for viewing the results<br />
+1. Tracer : MCMC parameter, diagnostic viewer.<br />
+2. FigTree : Phylogeny Viewer<br />
+3. SeaView : Alignment viewer.</p>
+<p>Then a quick start to run BAli-Phy is to type in two following commands:<br />
+<code>bali-phy ~/examples/sequences/5S-rRNA/5d.fasta --iter=150</code><br />
+<code>bp-analyze 5d-1/</code></p>
+<p>The output results are in a separate file named “5d-1”&quot; which is in root directory (~/fengqian), including</p>
+<ul>
+<li>Table: This is a result list</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: center;">Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: center;">C1.log</td>
+<td>Numeric parameters: indel and substitution rates, etc. Opened by Tracer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: center;">C1.trees</td>
+<td>Tree samples: one sample per line, in Newick format. Opened by FigTree</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: center;">C1.Pp.fastas</td>
+<td>Sampled alignments for partition p including ancestral sequences. Opened by SeaView</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: center;">C1.out</td>
+<td>Iteration numbers, probabilities, success probabilities for transition kernels.</td>
+</tr>
+</tbody>
+</table>
+<p>and other little files.</p>
+<p>Last, to summarize the output, type this to find majority consensus tree, note the dir has changed to 5d-1.<br />
+<code>trees-consensus C1.trees $&gt;$ c50.PP.tree</code></p>
+<p>To compute the maximum a posteriori tree, input:<br />
+<code>trees-consensus --skip=10% C1.trees --map-tree=MAP.tree</code></p>
+<p>Checking topology convergence use: <code>trees-bootstrap C1.trees</code><br />
+It will show us the PP and LOD values regarding to each topology as well.</p>
 <p>Anyway, even though this framework enjoys great advantages in estimating alignment and phylogeny at the same time, there exist some limitations as well. First is the parameters prior are not sufficient for biological meaning. Another shortcoming is indel process parameters are the same along each branch, which contrasts with ClustalW. In ClustalW, there are a function of branch lengths.</p>
-<p>It is a challenge for me to understand equation (4) and (6) in this paper fully.</p>
+<p>It is a challenge for me to fully understand equation (4) and (6) in this paper.</p>
+<p>PS: I am learning MCMC from Chib Siddhartha and Edward Greenberg (1995)’s <a href="http://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/Basic/ChibGreenberg1995.pdf">paper</a>, a powerful algorithm, it seems pretty interesting.^_^</p>
 </section>
 
 <script type="text/x-mathjax-config">
