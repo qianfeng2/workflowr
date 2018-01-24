@@ -88,7 +88,44 @@ We show this modified MCMC algorithm converges to equilibrium distribution more 
 BAli-Phy is a C++ software providing samples from posterior of alignment and phylogeny model. I will show it step by step to interested readers. This software please click 
 [here](http://www.bali-phy.org/index.php).
 
+Firstly install the BAli-Phy using homebrew based on its [User's Guide](http://www.bali-phy.org/README.html#running) in this software website. We will run commands in terminal. Type this command to check its version:
+``bali-phy --version``
+
+Next step is to install programs used for viewing the results  
+1. Tracer : MCMC parameter, diagnostic viewer.  
+2. FigTree : Phylogeny Viewer  
+3. SeaView : Alignment viewer.
+
+Then a quick start to run BAli-Phy is to type in two following commands:  
+``bali-phy ~/examples/sequences/5S-rRNA/5d.fasta --iter=150``  
+``bp-analyze 5d-1/``  
+
+The output results are in a separate file named "5d-1""  which is in root directory (~/fengqian), including  
+
+* Table:  This is a result list
+
+Item     Name       Meaning
+------ ----------   -------
+1      C1.log        Numeric parameters: indel and substitution rates, etc. Opened by Tracer
+2      C1.trees        Tree samples: one sample per line, in Newick format. Opened by FigTree
+3       C1.Pp.fastas      Sampled alignments for partition p including ancestral sequences. Opened by SeaView
+4       C1.out        Iteration numbers, probabilities, success probabilities for transition kernels.
+
+and other little files. 
+
+Last, to summarize the output, type this to find majority consensus tree, note the dir has changed to 5d-1.  
+``trees-consensus C1.trees $>$ c50.PP.tree``
+
+To compute the maximum a posteriori tree, input:  
+``trees-consensus --skip=10% C1.trees --map-tree=MAP.tree``  
+
+Checking topology convergence use: 
+``trees-bootstrap C1.trees``  
+It will show us the PP and LOD values regarding to each topology as well.  
+
 Anyway, even though this framework enjoys great advantages in estimating alignment and phylogeny at the same time,  there exist some limitations as well. First is the parameters prior are not sufficient  for biological meaning. Another shortcoming is indel process parameters are the same along each branch, which contrasts with ClustalW. In ClustalW, there are a function of branch lengths.
 
-It is a challenge for me to understand equation (4) and (6) in this paper fully.
+It is a challenge for me to fully understand equation (4) and (6) in this paper.  
+
+PS: I am learning MCMC from Chib Siddhartha and Edward Greenberg (1995)'s [paper](http://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/Basic/ChibGreenberg1995.pdf), a powerful algorithm, it seems pretty interesting.^_^
 

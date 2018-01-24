@@ -59,7 +59,12 @@ If you have any question about this project, please feel free to contact me:
 - Note: [link](jointestimation.html)
 
 ***
+## Magic Algorithms
+#### [MCMC]()
+- Understanding the metropolis-hastings algorithm. *Chib, Siddhartha, and Edward Greenberg.The american statistician 49.4 (1995): 327-335.*
+- Paper: http://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/Basic/ChibGreenberg1995.pdf 
 
+***
 ## Book Review
 ![Book Cover](cover.png)
 
