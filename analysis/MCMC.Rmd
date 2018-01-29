@@ -1,0 +1,231 @@
+---
+title: "MCMC interest examples in R"
+author: "Qian Feng"
+date: 2018-01-28
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+
+MCMC (Markov Chain Monte Carlo) algorithm is used for sampling from a target distribution. Since we use markov chain, so we cannot sample independent samples as we did before. What we are going to do is to construct a markov chain to converge to target distribution as its stationary distribution. In general, this given distribution is usually posterior probability distribution in Baysian framework.
+
+```{r}
+set.seed(1)
+## plot convergence towards the true mean (red line at 0)
+samples <- rnorm(10000, 0, 1);mean(samples);
+cummean <- function(x)
+  cumsum(x) / seq_along(x)
+plot(cummean(samples),type="l",xlab="Samples",ylab="Cumulative mean",
+     panel.first=abline(h=0, col="red"),las=1)
+```
+
+```{r}
+#Transforming the x axis onto a log scale and showing another 30 random approaches
+plot(cummean(samples), type="l", xlab="Sample", ylab="Cumulative mean",
+     panel.first=abline(h=0, col="red"),las=1, log="x")
+for (i in seq_len(30))
+  lines(cummean(rnorm(10000, 0, 1)),
+        col=rgb(runif(1), runif(1), runif(1), .5))
+```
+
+## Stationary distributions
+The Markov chain will have a stationary distribution if the process is *irreducible* (every state is visitable from every other state) and *aperiodic* (the number of steps between two visits of a state is not a fixed integer multiple number of steps).
+```{r}
+#Stationary distributions.Let P be the transition probability matrix for the chain:
+P=matrix(c(.5,.2,.25,.25,.1,.25,.25,.7,.5),ncol=3)
+rowSums(P)#the rows sum to 1
+colSums(P)#the columns do not necessarily sum to 1
+iterate.P <- function(x, P, n) 
+  {
+  res <- matrix(NA, n+1, length(x))
+  res[1,] <- x
+  for (i in seq_len(n))
+    res[i+1,] <- x <- x %*% P
+  res
+}
+n=10;
+#y1 indicates that 100% probability of being in state 1 and no chance of being in any other states
+y1 <- iterate.P(c(1, 0, 0), P, n)
+y2 <- iterate.P(c(0, 1, 0), P, n)
+y3 <- iterate.P(c(0, 0, 1), P, n)
+y1
+y2
+y3
+matplot(0:n, y1, type="l", lty=1, xlab="Step", ylab="y", las=1)
+matlines(0:n, y2, lty=2)
+matlines(0:n, y3, lty=3)
+#regardless where it started,y1,y2and y3 indicate 32% chance to converge to state1,22% chance to state2,46% chance to state3
+```
+
+A sufficient (but not necessary) condition for the existance of a stationary distribution is Detailed Balance,which implies this markov chain is *reversible*.
+
+## Example 1: MCMC sampling in one dimension problem
+In following 1D problem, core function is step() and run().
+```{r}
+p <- 0.4
+mu <- c(-1, 2)
+sd <- c(.5, 2)
+f <- function(x)
+  p     * dnorm(x, mu[1], sd[1]) +
+  (1-p) * dnorm(x, mu[2], sd[2])
+curve(f(x),las=1,col="red",-4,8,n=300)
+q <- function(x) rnorm(1, x, 4)
+step <- function(x,f,q){
+  xp=q(x)
+  alpha=min(1,f(xp)/f(x))
+  if(runif(1)<alpha)
+    x=xp
+  x
+}
+run <- function(x,f,q,nsteps){
+  res <- matrix(NA,nrow=nsteps,ncol=length(x))
+  for(i in 1:nsteps)
+    res[i,] <- x <- step(x,f,q)
+  drop(res)}
+res <- run(-10,f,q,1000)
+hist(res,50,freq=F,xlab="x",ylab="probability density",xlim=c(-10, 8), ylim=c(0, .35),las=1)
+z <- integrate(f,-Inf,Inf)$value;###z=1
+curve(f(x)/z,add=T,col="red",n=300)
+```
+
+## Example 2: MCMC in Bayesian framework to estimate allele frequency
+If p is the frequency of the allele A then the genotypes AA, Aa and aa will have frequencies p^2, 2p(1-p) and (1-p)*(1-p). A simple prior for p is to assume it is uniform on [0,1].  
+Suppose that we sample n individuals, and observe nAA with genotype AA,nAa with genotype Aa and naa with genotype aa. In our example,nAA = 50, nAa = 21, naa=29. Therefore, we observed 121 As, and 79 as, out of 200, the theoretical posterior p is beta(121+1,79+1).
+
+```{r}
+prior=function(p){
+  if (p>1|| p<0)
+    return(0)
+  else
+    return(1)
+}
+likelihood=function(p,nAA,nAa,naa){
+  return(p^(2*nAA) * (2*p*(1-p))^nAa * (1-p)^(2*naa))
+}
+easyMCMC=function(niter,pinitial,proposesd,nAA,nAa,naa)
+  {
+  p=rep(0,niter)
+  p[1]=pinitial
+  for (i in 2:niter)
+  {
+    newp=p[i-1]+rnorm(1,0,proposesd)
+    alpha=prior(newp)*likelihood(newp,nAA,nAa,naa)/(prior(p[i-1])*likelihood(p[i-1],nAA,nAa,naa))
+    if (runif(1)<alpha)
+     p[i]=newp
+   else
+     p[i]=p[i-1]
+  }
+  return(p)
+}
+sample_p=easyMCMC(10000,0.5,0.01,50,21,29)
+x=seq(0,1,length=1000)
+hist(sample_p[3001:10000],prob=T,las=1,breaks=50,main="Histogram of sample p")###discard the first 3000 p's as "burnin"
+lines(x,dbeta(x,122,80),col="red")
+
+```
+
+## Example 3: MCMC sampling in multiple-dimension problem
+
+```{r}
+trueA <- 5
+trueB <- 0
+trueSd <- 10
+sampleSize <- 31
+
+x <- (-(sampleSize-1)/2):((sampleSize-1)/2)# create independent x-values
+y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)# create dependent y according to ax + b + N(0,sd)
+plot(x,y, main="Test Data",type="p")
+
+likelihood <- function(param){
+  a = param[1]
+  b = param[2]
+  sd = param[3]
+  pred = a*x + b
+  singlelikelihoods = dnorm(y, mean = pred, sd = sd, log = T)
+  sumll = sum(singlelikelihoods)
+  return(sumll)   
+}
+prior <- function(param){
+  a = param[1]
+  b = param[2]
+  sd = param[3]
+  aprior = dunif(a, min=0, max=10, log = T)
+  bprior = dnorm(b, sd = 5, log = T)
+  sdprior = dunif(sd, min=0, max=30, log = T)
+  return(aprior+bprior+sdprior)
+}
+posterior <- function(param){
+  return (likelihood(param) + prior(param))
+}
+proposalfunction <- function(param){
+  return(rnorm(3,mean = param, sd= c(0.1,0.5,0.3)))
+}
+
+run_metropolis_MCMC <- function(startvalue, iterations){
+  chain = array(dim = c(iterations+1,3))
+  chain[1,] = startvalue
+  for (i in 1:iterations){
+    proposal = proposalfunction(chain[i,])
+    
+    probab = exp(posterior(proposal) - posterior(chain[i,]))
+    if (runif(1) < probab){
+      chain[i+1,] = proposal
+    }else{
+      chain[i+1,] = chain[i,]
+    }
+  }
+  return(chain)
+}
+startvalue = c(4,0,10)
+chain = run_metropolis_MCMC(startvalue, 10000)
+
+burnIn = 5000
+acceptance = 1-mean(duplicated(chain[-(1:burnIn),]))
+par(mfrow = c(2,3))
+hist(chain[-(1:burnIn),1],nclass=30,main="Posterior of a", xlab="True value = red line" )
+abline(v = mean(chain[-(1:burnIn),1]))
+abline(v = trueA, col="red" )
+hist(chain[-(1:burnIn),2],nclass=30, main="Posterior of b", xlab="True value = red line")
+abline(v = mean(chain[-(1:burnIn),2]))
+abline(v = trueB, col="red" )
+hist(chain[-(1:burnIn),3],nclass=30, main="Posterior of sd", xlab="True value = red line")
+abline(v = mean(chain[-(1:burnIn),3]) )
+abline(v = trueSd, col="red" )
+plot(chain[-(1:burnIn),1], type = "l", xlab="True value = red line" , main = "Chain values of a" )
+abline(h = trueA, col="red" )
+plot(chain[-(1:burnIn),2], type = "l", xlab="True value = red line" , main = "Chain values of b")
+abline(h = trueB, col="red" )
+plot(chain[-(1:burnIn),3], type = "l", xlab="True value = red line" , main = "Chain values of sd")
+abline(h = trueSd, col="red" )
+
+```
+
+## Reference
+1.tutorial link:[What is MCMC and when would you use it?](https://nicercode.github.io/guides/mcmc/)  
+2.stephens999 github:[mcmc examples](https://github.com/stephens999/mcmc-examples)  
+3.Florian Hartig: [A simple Metropolis-Hastings MCMC in R](https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/)
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
