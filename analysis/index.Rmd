@@ -64,6 +64,7 @@ If you have any question about this project, please feel free to contact me:
 - Understanding the metropolis-hastings algorithm. *Chib, Siddhartha, and Edward Greenberg.The american statistician 49.4 (1995): 327-335.*
 - Paper: http://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/Basic/ChibGreenberg1995.pdf 
 - Note: [link](MCMC.html)
+- A short and useful video:[Gibbs sampling](https://www.youtube.com/watch?v=a_08GKWHFWo)
 
 ***
 ## Book Review
