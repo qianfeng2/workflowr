@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Qian Feng" />
+
+<meta name="date" content="2018-01-28" />
+
+<title>MCMC interest examples in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 66px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+
+.section h2 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h3 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h4 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h5 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h6 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">paper-reading</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/qianfeng2/workflowr">source</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">MCMC interest examples in R</h1>
+<h4 class="author"><em>Qian Feng</em></h4>
+<h4 class="date"><em>2018-01-28</em></h4>
+
+</div>
+
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+<!-- Update knitr chunk options -->
+<!-- Insert the date the file was last updated -->
+<p><strong>Last updated:</strong> 2018-01-29</p>
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+<p><strong>Code version:</strong> cc871a3</p>
+<!-- Add your analysis here -->
+<p>MCMC (Markov Chain Monte Carlo) algorithm is used for sampling from a target distribution. Since we use markov chain, so we cannot sample independent samples as we did before. What we are going to do is to construct a markov chain to converge to target distribution as its stationary distribution. In general, this given distribution is usually posterior probability distribution in Baysian framework.</p>
+<pre class="r"><code>set.seed(1)
+## plot convergence towards the true mean (red line at 0)
+samples &lt;- rnorm(10000, 0, 1);mean(samples);</code></pre>
+<pre><code>[1] -0.006537039</code></pre>
+<pre class="r"><code>cummean &lt;- function(x)
+  cumsum(x) / seq_along(x)
+plot(cummean(samples),type=&quot;l&quot;,xlab=&quot;Samples&quot;,ylab=&quot;Cumulative mean&quot;,
+     panel.first=abline(h=0, col=&quot;red&quot;),las=1)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Transforming the x axis onto a log scale and showing another 30 random approaches
+plot(cummean(samples), type=&quot;l&quot;, xlab=&quot;Sample&quot;, ylab=&quot;Cumulative mean&quot;,
+     panel.first=abline(h=0, col=&quot;red&quot;),las=1, log=&quot;x&quot;)
+for (i in seq_len(30))
+  lines(cummean(rnorm(10000, 0, 1)),
+        col=rgb(runif(1), runif(1), runif(1), .5))</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<section id="stationary-distributions" class="level2">
+<h2>Stationary distributions</h2>
+<p>The Markov chain will have a stationary distribution if the process is <em>irreducible</em> (every state is visitable from every other state) and <em>aperiodic</em> (the number of steps between two visits of a state is not a fixed integer multiple number of steps).</p>
+<pre class="r"><code>#Stationary distributions.Let P be the transition probability matrix for the chain:
+P=matrix(c(.5,.2,.25,.25,.1,.25,.25,.7,.5),ncol=3)
+rowSums(P)#the rows sum to 1</code></pre>
+<pre><code>[1] 1 1 1</code></pre>
+<pre class="r"><code>colSums(P)#the columns do not necessarily sum to 1</code></pre>
+<pre><code>[1] 0.95 0.60 1.45</code></pre>
+<pre class="r"><code>iterate.P &lt;- function(x, P, n) 
+  {
+  res &lt;- matrix(NA, n+1, length(x))
+  res[1,] &lt;- x
+  for (i in seq_len(n))
+    res[i+1,] &lt;- x &lt;- x %*% P
+  res
+}
+n=10;
+#y1 indicates that 100% probability of being in state 1 and no chance of being in any other states
+y1 &lt;- iterate.P(c(1, 0, 0), P, n)
+y2 &lt;- iterate.P(c(0, 1, 0), P, n)
+y3 &lt;- iterate.P(c(0, 0, 1), P, n)
+y1</code></pre>
+<pre><code>           [,1]      [,2]      [,3]
+ [1,] 1.0000000 0.0000000 0.0000000
+ [2,] 0.5000000 0.2500000 0.2500000
+ [3,] 0.3625000 0.2125000 0.4250000
+ [4,] 0.3300000 0.2181250 0.4518750
+ [5,] 0.3215938 0.2172813 0.4611250
+ [6,] 0.3195344 0.2174078 0.4630578
+ [7,] 0.3190132 0.2173888 0.4635980
+ [8,] 0.3188839 0.2173917 0.4637245
+ [9,] 0.3188514 0.2173912 0.4637574
+[10,] 0.3188433 0.2173913 0.4637654
+[11,] 0.3188413 0.2173913 0.4637674</code></pre>
+<pre class="r"><code>y2</code></pre>
+<pre><code>           [,1]      [,2]      [,3]
+ [1,] 0.0000000 1.0000000 0.0000000
+ [2,] 0.2000000 0.1000000 0.7000000
+ [3,] 0.2950000 0.2350000 0.4700000
+ [4,] 0.3120000 0.2147500 0.4732500
+ [5,] 0.3172625 0.2177875 0.4649500
+ [6,] 0.3184263 0.2173319 0.4642419
+ [7,] 0.3187400 0.2174002 0.4638598
+ [8,] 0.3188150 0.2173900 0.4637951
+ [9,] 0.3188342 0.2173915 0.4637742
+[10,] 0.3188390 0.2173913 0.4637697
+[11,] 0.3188402 0.2173913 0.4637685</code></pre>
+<pre class="r"><code>y3</code></pre>
+<pre><code>           [,1]      [,2]      [,3]
+ [1,] 0.0000000 0.0000000 1.0000000
+ [2,] 0.2500000 0.2500000 0.5000000
+ [3,] 0.3000000 0.2125000 0.4875000
+ [4,] 0.3143750 0.2181250 0.4675000
+ [5,] 0.3176875 0.2172813 0.4650313
+ [6,] 0.3185578 0.2174078 0.4640344
+ [7,] 0.3187691 0.2173888 0.4638421
+ [8,] 0.3188228 0.2173917 0.4637855
+ [9,] 0.3188361 0.2173912 0.4637726
+[10,] 0.3188395 0.2173913 0.4637692
+[11,] 0.3188403 0.2173913 0.4637684</code></pre>
+<pre class="r"><code>matplot(0:n, y1, type=&quot;l&quot;, lty=1, xlab=&quot;Step&quot;, ylab=&quot;y&quot;, las=1)
+matlines(0:n, y2, lty=2)
+matlines(0:n, y3, lty=3)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#regardless where it started,y1,y2and y3 indicate 32% chance to converge to state1,22% chance to state2,46% chance to state3</code></pre>
+<p>A sufficient (but not necessary) condition for the existance of a stationary distribution is Detailed Balance,which implies this markov chain is <em>reversible</em>.</p>
+</section>
+<section id="example-1-mcmc-sampling-in-one-dimension-problem" class="level2">
+<h2>Example 1: MCMC sampling in one dimension problem</h2>
+<p>In following 1D problem, core function is step() and run().</p>
+<pre class="r"><code>p &lt;- 0.4
+mu &lt;- c(-1, 2)
+sd &lt;- c(.5, 2)
+f &lt;- function(x)
+  p     * dnorm(x, mu[1], sd[1]) +
+  (1-p) * dnorm(x, mu[2], sd[2])
+curve(f(x),las=1,col=&quot;red&quot;,-4,8,n=300)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>q &lt;- function(x) rnorm(1, x, 4)
+step &lt;- function(x,f,q){
+  xp=q(x)
+  alpha=min(1,f(xp)/f(x))
+  if(runif(1)&lt;alpha)
+    x=xp
+  x
+}
+run &lt;- function(x,f,q,nsteps){
+  res &lt;- matrix(NA,nrow=nsteps,ncol=length(x))
+  for(i in 1:nsteps)
+    res[i,] &lt;- x &lt;- step(x,f,q)
+  drop(res)}
+res &lt;- run(-10,f,q,1000)
+hist(res,50,freq=F,xlab=&quot;x&quot;,ylab=&quot;probability density&quot;,xlim=c(-10, 8), ylim=c(0, .35),las=1)
+z &lt;- integrate(f,-Inf,Inf)$value;###z=1
+curve(f(x)/z,add=T,col=&quot;red&quot;,n=300)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+</section>
+<section id="example-2-mcmc-in-bayesian-framework-to-estimate-allele-frequency" class="level2">
+<h2>Example 2: MCMC in Bayesian framework to estimate allele frequency</h2>
+<p>If p is the frequency of the allele A then the genotypes AA, Aa and aa will have frequencies p^2, 2p(1-p) and (1-p)*(1-p). A simple prior for p is to assume it is uniform on [0,1].<br />
+Suppose that we sample n individuals, and observe nAA with genotype AA,nAa with genotype Aa and naa with genotype aa. In our example,nAA = 50, nAa = 21, naa=29. Therefore, we observed 121 As, and 79 as, out of 200, the theoretical posterior p is beta(121+1,79+1).</p>
+<pre class="r"><code>prior=function(p){
+  if (p&gt;1|| p&lt;0)
+    return(0)
+  else
+    return(1)
+}
+likelihood=function(p,nAA,nAa,naa){
+  return(p^(2*nAA) * (2*p*(1-p))^nAa * (1-p)^(2*naa))
+}
+easyMCMC=function(niter,pinitial,proposesd,nAA,nAa,naa)
+  {
+  p=rep(0,niter)
+  p[1]=pinitial
+  for (i in 2:niter)
+  {
+    newp=p[i-1]+rnorm(1,0,proposesd)
+    alpha=prior(newp)*likelihood(newp,nAA,nAa,naa)/(prior(p[i-1])*likelihood(p[i-1],nAA,nAa,naa))
+    if (runif(1)&lt;alpha)
+     p[i]=newp
+   else
+     p[i]=p[i-1]
+  }
+  return(p)
+}
+sample_p=easyMCMC(10000,0.5,0.01,50,21,29)
+x=seq(0,1,length=1000)
+hist(sample_p[3001:10000],prob=T,las=1,breaks=50,main=&quot;Histogram of sample p&quot;)###discard the first 3000 p&#39;s as &quot;burnin&quot;
+lines(x,dbeta(x,122,80),col=&quot;red&quot;)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</section>
+<section id="example-3-mcmc-sampling-in-multiple-dimension-problem" class="level2">
+<h2>Example 3: MCMC sampling in multiple-dimension problem</h2>
+<pre class="r"><code>trueA &lt;- 5
+trueB &lt;- 0
+trueSd &lt;- 10
+sampleSize &lt;- 31
+
+x &lt;- (-(sampleSize-1)/2):((sampleSize-1)/2)# create independent x-values
+y &lt;-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)# create dependent y according to ax + b + N(0,sd)
+plot(x,y, main=&quot;Test Data&quot;,type=&quot;p&quot;)</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>likelihood &lt;- function(param){
+  a = param[1]
+  b = param[2]
+  sd = param[3]
+  pred = a*x + b
+  singlelikelihoods = dnorm(y, mean = pred, sd = sd, log = T)
+  sumll = sum(singlelikelihoods)
+  return(sumll)   
+}
+prior &lt;- function(param){
+  a = param[1]
+  b = param[2]
+  sd = param[3]
+  aprior = dunif(a, min=0, max=10, log = T)
+  bprior = dnorm(b, sd = 5, log = T)
+  sdprior = dunif(sd, min=0, max=30, log = T)
+  return(aprior+bprior+sdprior)
+}
+posterior &lt;- function(param){
+  return (likelihood(param) + prior(param))
+}
+proposalfunction &lt;- function(param){
+  return(rnorm(3,mean = param, sd= c(0.1,0.5,0.3)))
+}
+
+run_metropolis_MCMC &lt;- function(startvalue, iterations){
+  chain = array(dim = c(iterations+1,3))
+  chain[1,] = startvalue
+  for (i in 1:iterations){
+    proposal = proposalfunction(chain[i,])
+    
+    probab = exp(posterior(proposal) - posterior(chain[i,]))
+    if (runif(1) &lt; probab){
+      chain[i+1,] = proposal
+    }else{
+      chain[i+1,] = chain[i,]
+    }
+  }
+  return(chain)
+}
+startvalue = c(4,0,10)
+chain = run_metropolis_MCMC(startvalue, 10000)
+
+burnIn = 5000
+acceptance = 1-mean(duplicated(chain[-(1:burnIn),]))
+par(mfrow = c(2,3))
+hist(chain[-(1:burnIn),1],nclass=30,main=&quot;Posterior of a&quot;, xlab=&quot;True value = red line&quot; )
+abline(v = mean(chain[-(1:burnIn),1]))
+abline(v = trueA, col=&quot;red&quot; )
+hist(chain[-(1:burnIn),2],nclass=30, main=&quot;Posterior of b&quot;, xlab=&quot;True value = red line&quot;)
+abline(v = mean(chain[-(1:burnIn),2]))
+abline(v = trueB, col=&quot;red&quot; )
+hist(chain[-(1:burnIn),3],nclass=30, main=&quot;Posterior of sd&quot;, xlab=&quot;True value = red line&quot;)
+abline(v = mean(chain[-(1:burnIn),3]) )
+abline(v = trueSd, col=&quot;red&quot; )
+plot(chain[-(1:burnIn),1], type = &quot;l&quot;, xlab=&quot;True value = red line&quot; , main = &quot;Chain values of a&quot; )
+abline(h = trueA, col=&quot;red&quot; )
+plot(chain[-(1:burnIn),2], type = &quot;l&quot;, xlab=&quot;True value = red line&quot; , main = &quot;Chain values of b&quot;)
+abline(h = trueB, col=&quot;red&quot; )
+plot(chain[-(1:burnIn),3], type = &quot;l&quot;, xlab=&quot;True value = red line&quot; , main = &quot;Chain values of sd&quot;)
+abline(h = trueSd, col=&quot;red&quot; )</code></pre>
+<p><img src="figure/MCMC.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+</section>
+<section id="reference" class="level2">
+<h2>Reference</h2>
+<p>1.tutorial link:<a href="https://nicercode.github.io/guides/mcmc/">What is MCMC and when would you use it?</a><br />
+2.stephens999 github:<a href="https://github.com/stephens999/mcmc-examples">mcmc examples</a><br />
+3.Florian Hartig: <a href="https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/">A simple Metropolis-Hastings MCMC in R</a></p>
+</section>
+<section id="session-information" class="level2">
+<h2>Session information</h2>
+<!-- Insert the session information into the document -->
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.4.2 (2017-09-28)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Sierra 10.12.1
+
+Matrix products: default
+BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+
+locale:
+[1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] compiler_3.4.2  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
+ [5] tools_3.4.2     htmltools_0.3.6 yaml_2.1.16     Rcpp_0.12.14   
+ [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.18      git2r_0.21.0   
+[13] stringr_1.2.0   digest_0.6.14   evaluate_0.10.1</code></pre>
+</section>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
