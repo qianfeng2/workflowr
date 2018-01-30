@@ -80,12 +80,38 @@ Classical phylogenetic trees construction approaches consist of two following ty
 - **Sequence-based method** usually searches for best phylogenetic tree which can optimally explain the given multiple sequence alignment $M$. We discuss the three main approaches about it: maximum parsimony, ML and Bayesian inference.
 - **Distance-based method** usually constructs phylogenetic tree from a given a distance matrix $D$.
 
+### Maximum parsimony
+Maximum parsimony method is to look for a phylogenetic tree that explains the given set of aligned sequences using a minimum number of evolutionary events.  
 
-Maximum parsimony method is to look for a phylogenetic tree that explains the given set of aligned sequences using a minimum number of evolutionary events.
+The *parsimony score* of $T$(tree) and $M$(given multiple sequence alignment) is defined as:  
+
+\begin{equation}
+P S(T, M)=\min_{\alpha}\sum_{\left\{x,y\right\}}diff(x,y)
+\end{equation}
+where diff() function is known as *hamming distance* between sequence $x=(x_{1},x_{2},...x_{m})$and sequence $y=(y_{1},y_{2},...y_{m})$ that describes the difference of $x$ and $y$
+\begin{equation}
+diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
+\end{equation}
+
+The minimum is taken over all possible assignments $\alpha$ that make the sequences of length $m$ to be the internal nodes, summation is taken over all possible pairs of $x$ and $y$ that are assigned at opposite end of edge of $T$ .
+
+This task of computing parsimony score is  the known *small parsimony* problem. For bifurcating tree, *Fitch algorithm* is used to calculate efficiently, in more general settings, *Sankoff's algorithm* can be applied. Let's describe Fitch algorithm. Assume we are given a multiple sequence alignment $M$ and a bifurcating tree $T$ on  $\chi$, we need to score each character (that is, column of the alignment)  separately, and then obtain the parsimony score $P S(T, M$ by summing over all characters.
 
 
-## Session information
 
-<!-- Insert the session information into the document -->
-```{r session-info}
-```
+
+
+
+### Bayesian methods 
+Bayesian inference employs MCMC to sample from the posterior probability distribution. Posterior probability distribution in phylogeny inference is the conditional probability of T given input dataset. Each step, Metropolis-Hastings algorithm is used here, each step we propose a modified new tree topology, then accept it with the probability of $min(1, \alpha)$, $\alpha$ is the ratio of new prior times transition kernel divide the old one, otherwise, we reject and still use the current one. Therefore, a suitable modification of this proposed new tree should be taken into account with care. After discarding the burn in, sometimes we would also do sparsely sampling from output a series of trees, retaining only 1000th tree, say, in order to avoid the problem of autocorrelation, since the samples the not independent in this case. Let's talk about the modification in detail.  
+
+The first one is called *local algorithm*, which is a modification of NNI(Nearest neighbor interchange). This algorithm is very magic and powerful. Through  a path in a tree, then update length of different nodes and even topology by introducing random number. Regarding parameters in evolutionary model, like mutation rate $\mu$ in Jukes Cantor model, are modified by adding a random number uniformly chosen from an appropriate interval centered at 0. For a set of parameters that is constrained to sum to some specific value, such as 1 in the case of probabilities, the values are randomly modified according to a Dirichlet distribution.  
+
+Modifying the tree and proposal for new parameters are generated independently and simultaneously, and then accept or reject by a single Metropolis-Hastings ratio.  
+
+The second one is called *Metropolis-coupled MCMC* or ($MC^3$) , this is a variant of MCMC which are suitable if there are a large amount of parameters. The first chain $Z_{1}$ is called cold chain, other chains $Z_{2},...Z_{K}$ are called heated chains, all chains are run parallel. After all chains have moved one step, Let $T_{i}$ denote the current state of all chains, for all i =1 ,2 ... K, then after randomly choosing two chains $Z_{i}$ and $Z_{j}$, swap the result with specific probability. Swapping of chains can help the cold chains to move a new part of of parameter space that it may have difficulty in reaching. At the end of run, discard all heated chains and cold chain is processed as before.  
+
+A challenge here is we may not know whether this chain has converged. Two approaches are introduced here: one is to monitor whether there there is no further increase in likelihood, another one is run multiple chains in parallel, to keep them running until appear to sample from the same distribution. In addition, areas like choosing prior distribution and check convergence is ongoing research.  
+
+
+
