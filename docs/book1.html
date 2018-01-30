@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-05</p>
+<p><strong>Last updated:</strong> 2018-01-30</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> c07328f</p>
+<p><strong>Code version:</strong> 21669fb</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -347,32 +347,28 @@ shared across the workflowr files. -->
 <li><strong>Sequence-based method</strong> usually searches for best phylogenetic tree which can optimally explain the given multiple sequence alignment <span class="math inline">\(M\)</span>. We discuss the three main approaches about it: maximum parsimony, ML and Bayesian inference.</li>
 <li><strong>Distance-based method</strong> usually constructs phylogenetic tree from a given a distance matrix <span class="math inline">\(D\)</span>.</li>
 </ul>
+</section>
+<section id="maximum-parsimony" class="level3">
+<h3>Maximum parsimony</h3>
 <p>Maximum parsimony method is to look for a phylogenetic tree that explains the given set of aligned sequences using a minimum number of evolutionary events.</p>
+<p>The <em>parsimony score</em> of <span class="math inline">\(T\)</span>(tree) and <span class="math inline">\(M\)</span>(given multiple sequence alignment) is defined as:</p>
+<span class="math display">\[\begin{equation}
+P S(T, M)=\min_{\alpha}\sum_{\left\{x,y\right\}}diff(x,y)
+\end{equation}\]</span>
+<p>where diff() function is known as <em>hamming distance</em> between sequence <span class="math inline">\(x=(x_{1},x_{2},...x_{m})\)</span>and sequence <span class="math inline">\(y=(y_{1},y_{2},...y_{m})\)</span> that describes the difference of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> <span class="math display">\[\begin{equation}
+diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
+\end{equation}\]</span></p>
+<p>The minimum is taken over all possible assignments <span class="math inline">\(\alpha\)</span> that make the sequences of length <span class="math inline">\(m\)</span> to be the internal nodes, summation is taken over all possible pairs of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> that are assigned at opposite end of edge of <span class="math inline">\(T\)</span> .</p>
+<p>This task of computing parsimony score is the known <em>small parsimony</em> problem. For bifurcating tree, <em>Fitch algorithm</em> is used to calculate efficiently, in more general settings, <em>Sankoff’s algorithm</em> can be applied. Let’s describe Fitch algorithm. Assume we are given a multiple sequence alignment <span class="math inline">\(M\)</span> and a bifurcating tree <span class="math inline">\(T\)</span> on <span class="math inline">\(\chi\)</span>, we need to score each character (that is, column of the alignment) separately, and then obtain the parsimony score <span class="math inline">\(P S(T, M\)</span> by summing over all characters.</p>
 </section>
+<section id="bayesian-methods" class="level3">
+<h3>Bayesian methods</h3>
+<p>Bayesian inference employs MCMC to sample from the posterior probability distribution. Posterior probability distribution in phylogeny inference is the conditional probability of T given input dataset. Each step, Metropolis-Hastings algorithm is used here, each step we propose a modified new tree topology, then accept it with the probability of <span class="math inline">\(min(1, \alpha)\)</span>, <span class="math inline">\(\alpha\)</span> is the ratio of new prior times transition kernel divide the old one, otherwise, we reject and still use the current one. Therefore, a suitable modification of this proposed new tree should be taken into account with care. After discarding the burn in, sometimes we would also do sparsely sampling from output a series of trees, retaining only 1000th tree, say, in order to avoid the problem of autocorrelation, since the samples the not independent in this case. Let’s talk about the modification in detail.</p>
+<p>The first one is called <em>local algorithm</em>, which is a modification of NNI(Nearest neighbor interchange). This algorithm is very magic and powerful. Through a path in a tree, then update length of different nodes and even topology by introducing random number. Regarding parameters in evolutionary model, like mutation rate <span class="math inline">\(\mu\)</span> in Jukes Cantor model, are modified by adding a random number uniformly chosen from an appropriate interval centered at 0. For a set of parameters that is constrained to sum to some specific value, such as 1 in the case of probabilities, the values are randomly modified according to a Dirichlet distribution.</p>
+<p>Modifying the tree and proposal for new parameters are generated independently and simultaneously, and then accept or reject by a single Metropolis-Hastings ratio.</p>
+<p>The second one is called <em>Metropolis-coupled MCMC</em> or (<span class="math inline">\(MC^3\)</span>) , this is a variant of MCMC which are suitable if there are a large amount of parameters. The first chain <span class="math inline">\(Z_{1}\)</span> is called cold chain, other chains <span class="math inline">\(Z_{2},...Z_{K}\)</span> are called heated chains, all chains are run parallel. After all chains have moved one step, Let <span class="math inline">\(T_{i}\)</span> denote the current state of all chains, for all i =1 ,2 … K, then after randomly choosing two chains <span class="math inline">\(Z_{i}\)</span> and <span class="math inline">\(Z_{j}\)</span>, swap the result with specific probability. Swapping of chains can help the cold chains to move a new part of of parameter space that it may have difficulty in reaching. At the end of run, discard all heated chains and cold chain is processed as before.</p>
+<p>A challenge here is we may not know whether this chain has converged. Two approaches are introduced here: one is to monitor whether there there is no further increase in likelihood, another one is run multiple chains in parallel, to keep them running until appear to sample from the same distribution. In addition, areas like choosing prior distribution and check convergence is ongoing research.</p>
 </section>
-<section id="session-information" class="level2">
-<h2>Session information</h2>
-<!-- Insert the session information into the document -->
-<pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.4.2 (2017-09-28)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: macOS Sierra 10.12.1
-
-Matrix products: default
-BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
-
-locale:
-[1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-loaded via a namespace (and not attached):
- [1] compiler_3.4.2  backports_1.1.1 magrittr_1.5    rprojroot_1.2  
- [5] tools_3.4.2     htmltools_0.3.6 yaml_2.1.15     Rcpp_0.12.14   
- [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.17      git2r_0.19.0   
-[13] stringr_1.2.0   digest_0.6.13   evaluate_0.10.1</code></pre>
 </section>
 
 <script type="text/x-mathjax-config">
