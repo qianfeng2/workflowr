@@ -38,10 +38,17 @@ If you have any question about this project, please feel free to contact me:
 
 #### [Integrative Software RDP]()
 
-- RDP4: Detection and analysis of recombination patterns in virus genomes * Virus Evolution, 1(1),(2015)Martin, D. P., Murrell, B., Golden, M., Khoosal, A., & Muhire, B.*
+- RDP4: Detection and analysis of recombination patterns in virus genomes *Virus Evolution, 1(1),(2015)Martin, D. P., Murrell, B., Golden, M., Khoosal, A., & Muhire, B.*
 - Paper: https://academic.oup.com/ve/article/1/1/vev003/2568683
 - Software: http://web.cbio.uct.ac.za/~darren/RDP4Manual.pdf
 - Note: [link](RDP4.html)
+
+
+#### [Lower and upper bound on minimum recombination number]()
+
+- Efficient computation of close lower and upper bounds on the minimum number of recombinations in biological sequence evolution. *Song, Yun S., Yufeng Wu, and Dan Gusfield. Bioinformatics 21.suppl_1 (2005): i413-i422.*
+- Paper: https://academic.oup.com/bioinformatics/article/21/suppl_1/i413/203304 
+- Note: [link]()
 
 
 ### Phylogenetic Network construction
@@ -54,9 +61,13 @@ If you have any question about this project, please feel free to contact me:
 
 #### [Joint Baysian Estimation of Alignment and Phylogeny]()
 
-- Joint Bayesian estimation of alignment and phylogeny. *Redelings, Benjamin D., and Marc A. Suchard. Systematic biology 54.3 (2005): 401-418.*
+- 1.Joint Bayesian estimation of alignment and phylogeny. *Redelings, Benjamin D., and Marc A. Suchard. Systematic biology 54.3 (2005): 401-418.*
 - Paper: https://academic.oup.com/sysbio/article/54/3/401/1727336 
 - Note: [link](jointestimation.html)
+
+- 2.BayesCAT: Bayesian co‐estimation of alignment and tree. *Shim, Heejung, and Bret Larget. Biometrics (2017).*
+- Paper: https://heejungshim.org/research/#BayesCAT 
+- Note: [link]()
 
 ***
 ## Magic Algorithms
