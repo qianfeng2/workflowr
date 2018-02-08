@@ -1,0 +1,88 @@
+---
+title: "Random walk"
+author: "Qian Feng"
+date: 2018-02-08
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+Random walk in 1,2,3 dimension examples, pretty interesting!
+
+## 1D
+```{r}
+##################################################
+N = 10000  
+signal = vector(length = N)  
+signal[1] = 0 
+for (i in 2:N)  
+{  
+  # random select one offset (from [-1,1]) to signal[i-1]  
+  signal[i] = signal[i-1] + sample(c(-1,1),1)   
+}  
+plot( signal,type = 'l',col = 'yellow')
+```
+
+## 2D
+```{r}
+##################################################
+N = 100
+x = vector(length = N)
+y = vector(length = N)
+x[1] = 0
+y[1] = 0
+for (i in 2:N)
+{
+  x[i] = x[i-1] + rnorm(1)
+  y[i] = y[i-1] + rnorm(1)
+}
+
+plot(x,y,type = 'l', col='red')
+```
+
+## 3D
+```{r}
+##################################################
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("scatterplot3d")
+library("scatterplot3d")
+N = 100
+x = vector(length = N)
+y = vector(length = N)
+z = vector(length = N)
+x[1] = 0
+y[1] = 0
+z[1] = 0
+for (i in 2:N)
+{
+  x[i] = x[i-1] + rnorm(1)
+  y[i] = y[i-1] + rnorm(1)
+  z[i] = z[i-1] + rnorm(1)
+}
+scatterplot3d(x, y, z,color="red", col.axis="blue", type="h", col.grid="lightblue",main="scatterplot3d - 1", pch=20)
+scatterplot3d(x, y, z,color="red", col.axis="blue", type="l", col.grid="lightblue",main="scatterplot3d - 1", pch=20)
+```
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
