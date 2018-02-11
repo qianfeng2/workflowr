@@ -95,8 +95,16 @@ diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
 
 The minimum is taken over all possible assignments $\alpha$ that make the sequences of length $m$ to be the internal nodes, summation is taken over all possible pairs of $x$ and $y$ that are assigned at opposite end of edge of $T$ .
 
-This task of computing parsimony score is  the known *small parsimony* problem. For bifurcating tree, *Fitch algorithm* is used to calculate efficiently, in more general settings, *Sankoff's algorithm* can be applied. Let's describe Fitch algorithm. Assume we are given a multiple sequence alignment $M$ and a bifurcating tree $T$ on  $\chi$, we need to score each character (that is, column of the alignment)  separately, and then obtain the parsimony score $P S(T, M$ by summing over all characters.
+This task of computing parsimony score is  the known *small parsimony* problem. In small parsimony problem, input is aligned sequences and a tree with sequences at leaves, output is an sequences assignment of all internal nodes in this tree with minimum number of changes across all edges. For bifurcating tree, *Fitch algorithm* is used to calculate efficiently, in more general settings, *Sankoff's algorithm* can be applied. 
 
+Let's describe Fitch algorithm which has a linear time when solving above small parsimony problem. Assume we are given a multiple sequence alignment $M$ and a bifurcating tree $T$ on  $\chi$, we need to score each character (that is, column of the alignment)separately, and then obtain the parsimony score $P S(T, M)$ by summing over all characters.
+
+This algorithm proceeds in two parts, as shown in following pictures. The first part is called *bottom up* phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is *top down* process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time. 
+![Figure1](Fitch1.jpg)
+
+![Figure1](Fitch2.jpg)
+
+On the contrary, there is *big parsimony*(called large parsimony also). It's related with a search through the space of trees. In big parsimony problem, input is only aligned sequences, output is a labeled tree with minimum number of changes across all edges (over all trees). It is a NP hard problem.
 
 
 
@@ -114,4 +122,22 @@ The second one is called *Metropolis-coupled MCMC* or ($MC^3$) , this is a varia
 A challenge here is we may not know whether this chain has converged. Two approaches are introduced here: one is to monitor whether there there is no further increase in likelihood, another one is run multiple chains in parallel, to keep them running until appear to sample from the same distribution. In addition, areas like choosing prior distribution and check convergence is ongoing research.  
 
 
+
+### Branch-swapping method
+When researchers explore the bifurcating trees space, they actually move from one bifurcating tree $T$ to another bifurcating tree $T'$ by applying  *Branch-swapping method* to rearrange a part of tree $T$. There are three methods : NNI(Nearest neighbor interchange),SPR(Subtree prune and regraft) and TBR(Tree bisection and reconnection). In order to show this three methods vividly, please look at the figures 3.14-3.16 which are all from this book. Let NNI(T), SPR(T) and TBR(T) represent the set of all possible trees that can be obtained by applying NNI,SPR and TBR respectively. It is not difficult to note that:
+
+\begin{equation}
+NNI(T) \subseteq SPR(T) \subseteq TBR(T)
+\end{equation}
+
+Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another.
+![Figure3.14](NNI.jpg)
+
+![Figure3.15](SPR.jpg)
+![Figure3.16](TBR.jpg)
+
+*Figure 3.14-16 are adapted from original paper
+
+### Bootstrap analysis
+In order to evaluate the robustness of estimated phylogenetic tree, bootstrapping is employed. Given a multiple sequence alignment $M$ of length $m$ and phylogenetic tree construction method, first step is to get bootstrap replicate $M'$ by randomly sampling from $M$ that consists of $m$ columns, with replacement, normally a set of 100 or 1000, noted $\left\{M^{1},M^{2},...M^{1000}\right\}$(say 1000), the method is applied in each replicate, producing a collection of phylogenetic trees $B=\left\{{T^{1},T^{2},...T^{1000}}\right\}$, then use these trees to determine  bootstrap support of each split. In practice, a bootstrap support of at least 70%, is required for a split to be considered trustworthy.
 
