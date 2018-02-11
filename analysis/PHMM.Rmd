@@ -1,0 +1,130 @@
+---
+title: "HMM and PHMM in R"
+author: "Qian Feng"
+date: 2018-02-11
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+The ‘aphid’ R package for analysis with profile hidden Markov models is published by Shaun Wilkinson on 2017-06-23. Let's practice this package to drive HMM and PHMM model and use related algorithms.
+
+```{r}
+library("aphid")
+states <- c("Begin", "Fair", "Loaded")
+residues <- paste(1:6)
+### Define transition probability matrix A
+A <- matrix(c(0, 0, 0, 0.99, 0.95, 0.1, 0.01, 0.05, 0.9), nrow = 3)
+dimnames(A) <- list(from = states, to = states)
+### Define emission probability matrix E
+E <- matrix(c(rep(1/6, 6), rep(1/10, 5), 1/2), nrow = 2, byrow = TRUE)
+dimnames(E) <- list(states = states[-1], residues = residues)
+### Create the HMM object
+x <- structure(list(A = A, E = E), class = "HMM")
+### Plot the model
+plot(x, textexp = 1.5)
+### Optionally add the transition probabilities as text
+text(x = 0.02, y = 0.5, labels = "0.95")
+text(x = 0.51, y = 0.5, labels = "0.90")
+text(x = 0.5, y = 0.9, labels = "0.05")
+text(x = 0.5, y = 0.1, labels = "0.10")
+```
+```{r}
+#### viterbi algorithm
+data(casino)
+### The actual path is stored in the names attribute of the sequence
+actual <- c("F", "L")[match(names(casino), c("Fair", "Loaded"))]
+### Find the predicted path
+vit1 <- Viterbi(x, casino)
+predicted <- c("F", "L")[vit1$path + 1]
+### Note the path element of the output Viterbi object is an integer vector
+### the addition of 1 to the path converts from C/C++ to R's indexing style
+actual[1:50]###list examples fromm first roll to 50th roll
+predicted[1:50]
+
+```
+
+```{r}
+#### forward and posterior probability
+### The line shows the posterior probability that the dice was fair at each roll,
+### while the grey rectangles show the actual periods for which the loaded dice 
+### was being used.
+casino.post <- posterior(x, casino)
+plot(1:300, seq(0, 1, length.out = 300), type = "n", xlab = "Roll number",
+     ylab = "Posterior probability of dice being fair")
+starts <- which(c("L", actual) == "F" & c(actual, "F") == "L")
+ends <- which(c("F", actual) == "L" & c(actual, "L") == "F") - 1
+for(i in 1:6) rect(starts[i], 0, ends[i], 1, col = "grey", border = NA)
+lines(1:300, casino.post[1, ])
+```
+
+## Drive HMM model
+
+```{r}
+#### drive HMM model given a sequence with its known state path 
+### (stored as the ‘names’ attribute of the sequence)
+y <- deriveHMM(list(casino), logspace = FALSE)
+plot(y, textexp = 1.5)
+### Optionally add the transition probabilities as text
+text(x = 0.02, y = 0.5, labels = round(y$A["Fair", "Fair"], 2))
+text(x = 0.51, y = 0.5, labels = round(y$A["Loaded", "Loaded"], 2))
+text(x = 0.5, y = 0.9, labels = round(y$A["Fair", "Loaded"], 2))
+text(x = 0.5, y = 0.1, labels = round(y$A["Loaded", "Fair"], 2))
+```
+
+## Drive Profile HMM model
+```{r}
+#### drive profile HMM model
+###“path” element taking values 0 (“delete”), 1 (“match”) or 2 (“insert”)
+data(globins)
+globins
+globins.PHMM <- derivePHMM(globins, residues = "AMINO", seqweights = NULL)
+plot(globins.PHMM)
+path <- Viterbi(globins.PHMM, globins["GLB1_GLYDI", ])$path
+c("D", "M", "I")[path + 1]
+```
+
+## Sequence Simulation
+```{r}
+#### Sequence Simulation
+###generate()is used to generate sequences
+###train() is for optimizing model parameters using either the Baum Welch or Viterbi training algorithm
+sim <- list(length = 10)
+set.seed(9999)
+for(i in 1:10) sim[[i]] <- generate(globins.PHMM, size = 20)
+sim <- lapply(sim, function(s) s[names(s) != "D"])
+globins2.PHMM <- train(globins.PHMM, sim, method = "BaumWelch", 
+                       deltaLL = 0.01, seqweights = NULL)
+```
+
+## Sequence Alignment
+```{r}
+#### Sequence Alignment
+##deconstruct the original globin alignment and re-align the sequences using the original PHMM.
+globins <- unalign(globins)
+align(globins, model = globins.PHMM, seqweights = NULL, residues = "AMINO")
+```
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```

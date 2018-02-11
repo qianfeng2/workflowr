@@ -79,6 +79,13 @@ If you have any question about this project, please feel free to contact me:
 - A short and useful video:[Gibbs sampling](https://www.youtube.com/watch?v=a_08GKWHFWo)
 
 
+
+***
+## HMM and PHMM model
+#### [Drive HMM and PHMM in R](PHMM.html)
+
+
+
 ***
 ## Book Review
 ![Book Cover](cover.png)
