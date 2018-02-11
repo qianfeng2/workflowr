@@ -100,9 +100,7 @@ This task of computing parsimony score is  the known *small parsimony* problem. 
 Let's describe Fitch algorithm which has a linear time when solving above small parsimony problem. Assume we are given a multiple sequence alignment $M$ and a bifurcating tree $T$ on  $\chi$, we need to score each character (that is, column of the alignment)separately, and then obtain the parsimony score $P S(T, M)$ by summing over all characters.
 
 This algorithm proceeds in two parts, as shown in following pictures. The first part is called *bottom up* phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is *top down* process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time. 
-![Figure1](Fitch1.jpg)
 
-![Figure1](Fitch2.jpg)
 
 On the contrary, there is *big parsimony*(called large parsimony also). It's related with a search through the space of trees. In big parsimony problem, input is only aligned sequences, output is a labeled tree with minimum number of changes across all edges (over all trees). It is a NP hard problem.
 
@@ -131,10 +129,6 @@ NNI(T) \subseteq SPR(T) \subseteq TBR(T)
 \end{equation}
 
 Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another.
-![Figure3.14](NNI.jpg)
-
-![Figure3.15](SPR.jpg)
-![Figure3.16](TBR.jpg)
 
 *Figure 3.14-16 are all from original paper*
 
