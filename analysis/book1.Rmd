@@ -136,7 +136,7 @@ Each of these three methods could be used to define distance of two phylogenetic
 ![Figure3.15](SPR.jpg)
 ![Figure3.16](TBR.jpg)
 
-*Figure 3.14-16 are adapted from original paper
+*Figure 3.14-16 are all from original paper
 
 ### Bootstrap analysis
 In order to evaluate the robustness of estimated phylogenetic tree, bootstrapping is employed. Given a multiple sequence alignment $M$ of length $m$ and phylogenetic tree construction method, first step is to get bootstrap replicate $M'$ by randomly sampling from $M$ that consists of $m$ columns, with replacement, normally a set of 100 or 1000, noted $\left\{M^{1},M^{2},...M^{1000}\right\}$(say 1000), the method is applied in each replicate, producing a collection of phylogenetic trees $B=\left\{{T^{1},T^{2},...T^{1000}}\right\}$, then use these trees to determine  bootstrap support of each split. In practice, a bootstrap support of at least 70%, is required for a split to be considered trustworthy.
