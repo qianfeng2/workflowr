@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-30</p>
+<p><strong>Last updated:</strong> 2018-02-11</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 21669fb</p>
+<p><strong>Code version:</strong> 0b32bef</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -359,7 +359,13 @@ P S(T, M)=\min_{\alpha}\sum_{\left\{x,y\right\}}diff(x,y)
 diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
 \end{equation}\]</span></p>
 <p>The minimum is taken over all possible assignments <span class="math inline">\(\alpha\)</span> that make the sequences of length <span class="math inline">\(m\)</span> to be the internal nodes, summation is taken over all possible pairs of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> that are assigned at opposite end of edge of <span class="math inline">\(T\)</span> .</p>
-<p>This task of computing parsimony score is the known <em>small parsimony</em> problem. For bifurcating tree, <em>Fitch algorithm</em> is used to calculate efficiently, in more general settings, <em>Sankoff’s algorithm</em> can be applied. Let’s describe Fitch algorithm. Assume we are given a multiple sequence alignment <span class="math inline">\(M\)</span> and a bifurcating tree <span class="math inline">\(T\)</span> on <span class="math inline">\(\chi\)</span>, we need to score each character (that is, column of the alignment) separately, and then obtain the parsimony score <span class="math inline">\(P S(T, M\)</span> by summing over all characters.</p>
+<p>This task of computing parsimony score is the known <em>small parsimony</em> problem. In small parsimony problem, input is aligned sequences and a tree with sequences at leaves, output is an sequences assignment of all internal nodes in this tree with minimum number of changes across all edges. For bifurcating tree, <em>Fitch algorithm</em> is used to calculate efficiently, in more general settings, <em>Sankoff’s algorithm</em> can be applied.</p>
+<p>Let’s describe Fitch algorithm which has a linear time when solving above small parsimony problem. Assume we are given a multiple sequence alignment <span class="math inline">\(M\)</span> and a bifurcating tree <span class="math inline">\(T\)</span> on <span class="math inline">\(\chi\)</span>, we need to score each character (that is, column of the alignment)separately, and then obtain the parsimony score <span class="math inline">\(P S(T, M)\)</span> by summing over all characters.</p>
+<p>This algorithm proceeds in two parts, as shown in following pictures. The first part is called <em>bottom up</em> phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is <em>top down</em> process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time. <img src="Fitch1.jpg" alt="Figure1" /></p>
+<figure>
+<img src="Fitch2.jpg" alt="Figure1" /><figcaption>Figure1</figcaption>
+</figure>
+<p>On the contrary, there is <em>big parsimony</em>(called large parsimony also). It’s related with a search through the space of trees. In big parsimony problem, input is only aligned sequences, output is a labeled tree with minimum number of changes across all edges (over all trees). It is a NP hard problem.</p>
 </section>
 <section id="bayesian-methods" class="level3">
 <h3>Bayesian methods</h3>
@@ -368,6 +374,20 @@ diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
 <p>Modifying the tree and proposal for new parameters are generated independently and simultaneously, and then accept or reject by a single Metropolis-Hastings ratio.</p>
 <p>The second one is called <em>Metropolis-coupled MCMC</em> or (<span class="math inline">\(MC^3\)</span>) , this is a variant of MCMC which are suitable if there are a large amount of parameters. The first chain <span class="math inline">\(Z_{1}\)</span> is called cold chain, other chains <span class="math inline">\(Z_{2},...Z_{K}\)</span> are called heated chains, all chains are run parallel. After all chains have moved one step, Let <span class="math inline">\(T_{i}\)</span> denote the current state of all chains, for all i =1 ,2 … K, then after randomly choosing two chains <span class="math inline">\(Z_{i}\)</span> and <span class="math inline">\(Z_{j}\)</span>, swap the result with specific probability. Swapping of chains can help the cold chains to move a new part of of parameter space that it may have difficulty in reaching. At the end of run, discard all heated chains and cold chain is processed as before.</p>
 <p>A challenge here is we may not know whether this chain has converged. Two approaches are introduced here: one is to monitor whether there there is no further increase in likelihood, another one is run multiple chains in parallel, to keep them running until appear to sample from the same distribution. In addition, areas like choosing prior distribution and check convergence is ongoing research.</p>
+</section>
+<section id="branch-swapping-method" class="level3">
+<h3>Branch-swapping method</h3>
+<p>When researchers explore the bifurcating trees space, they actually move from one bifurcating tree <span class="math inline">\(T\)</span> to another bifurcating tree <span class="math inline">\(T&#39;\)</span> by applying <em>Branch-swapping method</em> to rearrange a part of tree <span class="math inline">\(T\)</span>. There are three methods : NNI(Nearest neighbor interchange),SPR(Subtree prune and regraft) and TBR(Tree bisection and reconnection). In order to show this three methods vividly, please look at the figures 3.14-3.16 which are all from this book. Let NNI(T), SPR(T) and TBR(T) represent the set of all possible trees that can be obtained by applying NNI,SPR and TBR respectively. It is not difficult to note that:</p>
+<span class="math display">\[\begin{equation}
+NNI(T) \subseteq SPR(T) \subseteq TBR(T)
+\end{equation}\]</span>
+<p>Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another. <img src="NNI.jpg" alt="Figure3.14" /></p>
+<p><img src="SPR.jpg" alt="Figure3.15" /> <img src="TBR.jpg" alt="Figure3.16" /></p>
+<p>*Figure 3.14-16 are adapted from original paper</p>
+</section>
+<section id="bootstrap-analysis" class="level3">
+<h3>Bootstrap analysis</h3>
+<p>In order to evaluate the robustness of estimated phylogenetic tree, bootstrapping is employed. Given a multiple sequence alignment <span class="math inline">\(M\)</span> of length <span class="math inline">\(m\)</span> and phylogenetic tree construction method, first step is to get bootstrap replicate <span class="math inline">\(M&#39;\)</span> by randomly sampling from <span class="math inline">\(M\)</span> that consists of <span class="math inline">\(m\)</span> columns, with replacement, normally a set of 100 or 1000, noted <span class="math inline">\(\left\{M^{1},M^{2},...M^{1000}\right\}\)</span>(say 1000), the method is applied in each replicate, producing a collection of phylogenetic trees <span class="math inline">\(B=\left\{{T^{1},T^{2},...T^{1000}}\right\}\)</span>, then use these trees to determine bootstrap support of each split. In practice, a bootstrap support of at least 70%, is required for a split to be considered trustworthy.</p>
 </section>
 </section>
 
