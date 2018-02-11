@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-02-11</p>
+<p><strong>Last updated:</strong> 2018-02-12</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 9e644af</p>
+<p><strong>Code version:</strong> 310e435</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -361,10 +361,7 @@ diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
 <p>The minimum is taken over all possible assignments <span class="math inline">\(\alpha\)</span> that make the sequences of length <span class="math inline">\(m\)</span> to be the internal nodes, summation is taken over all possible pairs of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> that are assigned at opposite end of edge of <span class="math inline">\(T\)</span> .</p>
 <p>This task of computing parsimony score is the known <em>small parsimony</em> problem. In small parsimony problem, input is aligned sequences and a tree with sequences at leaves, output is an sequences assignment of all internal nodes in this tree with minimum number of changes across all edges. For bifurcating tree, <em>Fitch algorithm</em> is used to calculate efficiently, in more general settings, <em>Sankoff’s algorithm</em> can be applied.</p>
 <p>Let’s describe Fitch algorithm which has a linear time when solving above small parsimony problem. Assume we are given a multiple sequence alignment <span class="math inline">\(M\)</span> and a bifurcating tree <span class="math inline">\(T\)</span> on <span class="math inline">\(\chi\)</span>, we need to score each character (that is, column of the alignment)separately, and then obtain the parsimony score <span class="math inline">\(P S(T, M)\)</span> by summing over all characters.</p>
-<p>This algorithm proceeds in two parts, as shown in following pictures. The first part is called <em>bottom up</em> phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is <em>top down</em> process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time. <img src="Fitch1.jpg" alt="Figure1" /></p>
-<figure>
-<img src="Fitch2.jpg" alt="Figure1" /><figcaption>Figure1</figcaption>
-</figure>
+<p>This algorithm proceeds in two parts, as shown in following pictures. The first part is called <em>bottom up</em> phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is <em>top down</em> process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time.</p>
 <p>On the contrary, there is <em>big parsimony</em>(called large parsimony also). It’s related with a search through the space of trees. In big parsimony problem, input is only aligned sequences, output is a labeled tree with minimum number of changes across all edges (over all trees). It is a NP hard problem.</p>
 </section>
 <section id="bayesian-methods" class="level3">
@@ -381,8 +378,7 @@ diff(x, y)=| \left\{ i | x_{i}\neq y_{i} \right\} |
 <span class="math display">\[\begin{equation}
 NNI(T) \subseteq SPR(T) \subseteq TBR(T)
 \end{equation}\]</span>
-<p>Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another. <img src="NNI.jpg" alt="Figure3.14" /></p>
-<p><img src="SPR.jpg" alt="Figure3.15" /> <img src="TBR.jpg" alt="Figure3.16" /></p>
+<p>Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another.</p>
 <p><em>Figure 3.14-16 are all from original paper</em></p>
 </section>
 <section id="bootstrap-analysis" class="level3">
