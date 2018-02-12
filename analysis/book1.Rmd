@@ -130,6 +130,14 @@ NNI(T) \subseteq SPR(T) \subseteq TBR(T)
 
 Each of these three methods could be used to define distance of two phylogenetic trees. For example, the SPR distance of two trees is minimum number of SPR operations necessary to transform from one tree into another.
 
+![](NNI.jpg)
+
+
+![](SPR.jpg)
+
+
+![](TBR.jpg)
+
 *Figure 3.14-16 are all from original paper*
 
 ### Bootstrap analysis
