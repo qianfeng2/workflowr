@@ -101,6 +101,9 @@ Let's describe Fitch algorithm which has a linear time when solving above small 
 
 This algorithm proceeds in two parts, as shown in following pictures. The first part is called *bottom up* phrase, from leaves to root, finding sets of possible ancestral states (labels) for each internal node, next part is *top down* process, from root to leaves, determining ancestral states (labels) for internal nodes. Different site is independent, so we can solve one site at a time. 
 
+![Figure1](Fitch1.jpg)
+
+![Figure1](Fitch2.jpg)
 
 On the contrary, there is *big parsimony*(called large parsimony also). It's related with a search through the space of trees. In big parsimony problem, input is only aligned sequences, output is a labeled tree with minimum number of changes across all edges (over all trees). It is a NP hard problem.
 
