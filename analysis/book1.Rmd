@@ -147,3 +147,53 @@ Each of these three methods could be used to define distance of two phylogenetic
 
 In order to evaluate the robustness of estimated phylogenetic tree, bootstrapping is employed. Given a multiple sequence alignment $M$ of length $m$ and phylogenetic tree construction method, first step is to get bootstrap replicate $M'$ by randomly sampling from $M$ that consists of $m$ columns, with replacement, normally a set of 100 or 1000, noted $\left\{M^{1},M^{2},...M^{1000}\right\}$(say 1000), the method is applied in each replicate, producing a collection of phylogenetic trees $B=\left\{{T^{1},T^{2},...T^{1000}}\right\}$, then use these trees to determine  bootstrap support of each split. In practice, a bootstrap support of at least 70%, is required for a split to be considered trustworthy.
 
+### UPGMA and NJ
+
+Neighbour-joining is the most popular method for computing the phylogenetic tree, viewed as a modification of UPGMA. In biology, molecular clock hypothesis states the mutation rate is constant over all sites of sequence and over all edges of the model tree. It implies that all leaves of tree all have same distance from the root. Actually, any tree produced by UPGMA algorithm has the property that all leaves have the same distance to the root. 
+
+The steps of UPGMA are pretty easy to understand: given a set of sequences, first calculate a table showing the hamming distance. Then merge the smallest distance in pairs of sequences to one cluster, creating a new node. After that, calculate the new distance table again. UPDMA is assembled bottom-up.
+
+Neighbour-joining doesn't need to assume a molecular clock like UPGMA. Its output is an unrooted tree. One difference between UPGMA and NJ is how to update the distance matrix after merging two clusters. The formula when computing the distance between a new cluster and one merged cluster is different(Look at figure 3.21). In UPGMA, the last term "$-d(C_{i},C_{j})$" is not needed.
+
+![](NJ.jpg)
+
+Another significant difference between UPGMA and NJ is how the length of edges are set, formula in terms os computing the distance between a leave and merged node is in following figure 3.22. In summary, based on these formula, we could recalculate the length of each branch in model tree, the direct difference when looking at UPGMA and NJ trees is the giant different in each branch length.  
+
+![](NJlength.jpg)
+
+However, we need to note that one disadvantage using NJ algorithm is that it may produce negative branch length, which happens quite frequently.
+
+
+### Balanced minimum evolution 
+
+A new and faster algorithm called FastME is proposed recently based on balanced minimum evolution(BME) framework, which could provide more accurate trees than NJ and never produce negative edge lengths.
+
+Given a distance matrix and an unrooted bifurcating tree topology, we could calculate the leave edge and internal edge length based on clear formulas and total tree length is given as well, in other words, calculating BME tree is a statistically consistent tree construction method, however, finding the optimal BME tree is NP hard, so we turn to heuristics, more precise, FastME heuristic. It has two phases. First step is an initial tree is constructed , next step is to iteratively update the tree topology using NNI until no further improvement in the score of total tree length. Since it doesn't need to explicitly point out each branch length, that's why it is significantly faster than NJ in practice.
+
+BME could be viewed as an improvement of classic minimum evolution problem. Moreover, it also consider the pairwise distance variance. In OLS method when constructing a tree, all distance have the same variance. But in general, it is not true,  the variance of larger distance tend to be larger. Actually, based on the formula of total length tree length, longer distance implies a smaller weight, therefore, BME can also be interpreted as a weighted least square method. FastME runs much faster than all previous weighted least square approaches.
+
+When comparing the distance between two phylogenetic trees, generally the trees are unrooted ones. Robinson-Foulds distance and quartet distance is used when measuring the similarity for a pair of trees. Even though there are so-called NNI, SPR and TBR distances which determine the minimal number of related operations from one topology to another, computation is NP hard and is rarely used in practice.
+
+### Consensus Tree
+
+In general, when facing with a collection of different phylogenetic trees, producing from different methods given the same multiple sequence alignment like MLE , MP and so forth, or from Bayesian inference, *consensus method* is necessary used to obtain *consensus tree* that represents evolutionary history which different phylogenetic trees agree, in some sense. 
+
+Here we introduce two kinds of consensus trees: strict consensus and majority consensus. Let $S_{strict}(T)$ denotes the set of all splits that occur in every tree in tree set. $S_{majority}(T)$ denotes the set of splits that occur in more than half of all trees in tree set. Here is an example figure to explain the strict and majority tree. In practice, majority consensus tree is more informative than strict consensus tree since the latter tends to be a star tree easily.
+
+![](consensus.jpg)
+
+Newick format is used to describe a rooted phylogenetic tree, of course it is also used to describe unrooted tree by erasing the root. example is here: 
+text="((t4:0.104381,(t2:0.075411,t1:0.075411):0.5):0.065840,t3:0.170221);"
+
+If possible, you could try this R code to plot a tree and check whether it is consistent with mine as shown beside the code:
+
+```{r}
+library(ape)
+tr1 <- read.tree(text= "((t5:0.161175,t6:0.161175):0.392293,((t4:0.104381,(t2:0.075411,t1:0.075411):0.028969):0.065840,t3:0.170221):0.383247);")
+tr2 <- read.tree(text= "((t5:2.161175,t6:0.161175):0.392293,((t4:0.104381,(t2:0.075411,t1:0.075411):1):0.065840,t3:0.170221):0.383247);")
+plot(tr1,font=1)
+plot(tr2,font=1)
+```
+
+
+## Phylogenetic network
