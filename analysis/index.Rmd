@@ -76,8 +76,8 @@ If you have any question about this project, please feel free to contact me:
 - Paper: http://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/Basic/ChibGreenberg1995.pdf 
 - Note: [link](MCMC.html)
 - Random walk example: [link](randomwalk.html)
+- Simulated annealing: [link](https://github.com/qianfeng2/PNcode/tree/master/code/simulated%20annealing)
 - A short and useful video:[Gibbs sampling](https://www.youtube.com/watch?v=a_08GKWHFWo)
-
 
 
 ***
