@@ -69,7 +69,8 @@ If you have any question about this project, please feel free to contact me:
 - Paper: https://heejungshim.org/research/#BayesCAT 
 - Note: [link]()
 
-### var biology background knowledge
+
+### Var biology background knowledge
 - Ape parasite origins of human malaria virulence genes. *Larremore, D. B. et al. Nat. Commun. 6:8368 doi: 10.1038/ncomms9368 (2015)*
 - Paper: https://www.nature.com/articles/ncomms9368.pdf 
 - Note: [link](larremore2016.html)
