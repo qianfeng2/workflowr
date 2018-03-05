@@ -50,6 +50,13 @@ If you have any question about this project, please feel free to contact me:
 - Paper: https://academic.oup.com/bioinformatics/article/21/suppl_1/i413/203304 
 - Note: [link]()
 
+#### [Recombination estmation using HMM and PAC]()
+
+- Hypervariable antigen genes in malaria have ancient roots.  *Zilversmit, Martine M., et al.  BMC evolutionary biology 13.1 (2013): 110.*.
+- Paper: https://bmcevolbiol.biomedcentral.com/articles/10.1186/1471-2148-13-110 
+- Note: [link](zilversmitpaper.html)
+
+
 
 ### Phylogenetic Network construction
 
