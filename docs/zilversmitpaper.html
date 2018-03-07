@@ -308,11 +308,13 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-03-05</p>
+<p><strong>Last updated:</strong> 2018-03-07</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 02ba12f</p>
+<p><strong>Code version:</strong> 18c3071</p>
 <!-- Add your analysis here -->
+<section id="brief-review" class="level2">
+<h2>Brief review</h2>
 <p>In this paper, using a novel HMM-based approach, researchers compare sequences of var gene DBL<span class="math inline">\(\alpha\)</span> domains from two divergent isolates in P.falciparum: 3D7 and HB3, and its sister taxa P.reichenowi. Results demonstrate this two species share similar gene size, and gene structure. To more specifically, they both have more than 51 var genes in a genome, and they both have a series of “homology blocks”. In addition, through simulation, they found recombination occurs almost every residue in DBL<span class="math inline">\(\alpha\)</span> domain which appears to be unusual, and no hotspot structure for this type of intradomain recombination even though interdomain hotspot structure could be considered in previous Rask’s study.</p>
 <p>High level of sequence diversity in the PfEMP1 proteins, encoded by 50 to 60 var genes, express on the surface of infected red cells, provoking an immune response, and are known virulence factors. Previous studies show that recombination, combined with point mutation, is the mechanism of var gene revolution. Another noteworthy point is that since host’s immune system is more effective against antigens, as a result, parasites expressing less-common proteins avoid detection more effectively.</p>
 <p>DBL<span class="math inline">\(\alpha\)</span> domain, averaging 1.8kb in length, is the only functional domain in P.falciparum and P.reichenowi, and it has stable location as well.</p>
@@ -323,6 +325,9 @@ shared across the workflowr files. -->
 <p><img src="gene_crossover.jpg" /></p>
 <p><em>This graphic is adapted from <a href="http://www.web-books.com/MoBio/">webbook</a></em></p>
 <p>Obviously, gene conversion in second figure belongs to the third type (Interallelic gene conversion)shown in first figure.</p>
+</section>
+<section id="core-method" class="level2">
+<h2>Core Method</h2>
 <p>New method is necessary to identify the relationship between species. In this paper, <strong>Tesserae</strong> program written in C language is used and implemented. HMM is employed to find homology, global alignment algorithm (Needleman-Wunsch) is to detect mosaic recombination, product of approximately conditionals (PAC) likelihood is utilized to estimate the recombination parameter. This paper aim to reconstruct each sequence in dataset as a mosaic of one or more donor sequences, allowing substitution, indel and recombination. The precise steps are as follows:</p>
 <p>Initially, recombination parameter set to zero, transition and emission probabilities , indels and mutations are estimated using Baum-Welch algorithm, then fix these parameters, a likelihood surface is constructed for the recombination parameter. Once MLE for recombination parameter is found, Viterbi path is computed for each sequence, this path provide the mosaic alignments.</p>
 <p>For simulated sequences, they construct 10 gene families, each family has 60 genes, each gene is composed of 150 amino acid residues in length, and a table of input parameters are needed. Each gene family is used for 8 different sets of parameters, namely, different levels of recombination and conversion. Each gene family’s simulation could viewed as two groups, one is indels without recombination, another one is coalescent with recombination, since there is currently no available program for joint estimation about recombination and indel.</p>
@@ -333,6 +338,32 @@ shared across the workflowr files. -->
 <p>Lastly, the most important analysis result is recombination is uniform throughout the DBL<span class="math inline">\(\alpha\)</span> domain and does not show a hot- or coldspot structure, that means recombination breaks at almost every residue. From the following table, high variance of block length indicate the lack of hot - or coldspots of recombination.</p>
 <p><img src="recom_blocks.jpg" /></p>
 <p><em>This table is adapted from original paper</em></p>
+</section>
+<section id="introduction-three-programs-for-generating-sequences" class="level2">
+<h2>Introduction three programs for generating sequences</h2>
+<p>One basic introduction I would add is the programs generating sequences , they are <a href="http://tree.bio.ed.ac.uk/software/seqgen/">Seq-Gen</a>, <a href="http://home.uchicago.edu/~rhudson1/source/mksamples.html">ms</a> and <a href="https://bibiserv.cebitec.uni-bielefeld.de/rose">Rose</a>, which are all shown in the first column of Table S2.</p>
+<p>Seq-Gen simulates sequences given a substitution model along a phylogeny. Ms, is an all-time classic engine for coalescent sequence simulations under a Wright-Fisher neutral model. and Rose, simulates sequences given a substitution model along a phylogeny incorporating indels. This introduction is originally from a web <a href="http://softlinks.amnh.org/popgen.html">link</a>. My own practice is <a href="">here</a></p>
+</section>
+<section id="summary-about-the-transition-matrix" class="level2">
+<h2>Summary about the transition matrix</h2>
+<p>Here is a summary of talk between Heejung and me on Monday and Tuesday afternoon in the first week of March 2018. Our talk focus on the explanation of the following transition matrix allowing insertion and deletion events.</p>
+<p><img src="Zil_paper_matrix.jpg" /></p>
+<p><em>This table is adapted from original paper</em></p>
+<p>Firstly we have <span class="math inline">\(n\)</span> destination sequences and one target sequence, assuming this target sequence as a mosaic of segments from those destination sequences. In this matrix, subscript “x” represents the target sequence and “k” represents any other destination sequence in the dataset.</p>
+<p>Firstly, this matrix is not a symmetric matrix. For example, elements in the first column are not the same with elements in the first row.</p>
+<p>The meaning of <span class="math inline">\(M_{x},I_{x},D_{x},M_{k},I_{k},D_{k}\)</span> are shown in the following picture:</p>
+<p><img src="meaning.jpg" /></p>
+<p>If we look at the two destination sequences in this figure, there are <span class="math inline">\(6+3=9\)</span> positions, at first, the start position uniformly come from this nine positions, therefore, every position has the same probability 1/9, representing <span class="math inline">\(1/|Y|\)</span> in the transition matrix. Next, let’s look at this matrix row by row, I will use <span class="math inline">\(T_{ij}\)</span> represent the element in row i and column j.</p>
+<p>In the first row, <span class="math inline">\(T_{11}\)</span> and $T_{18} $are both 0, which are sensible, the target sequence’s start point come from and only come from Match or insert, not Delete. So <span class="math inline">\(T_{14}\)</span>and <span class="math inline">\(T_{17}\)</span> are 0, moreover, the start point may come from one of sequence x or sequence k , so my understanding is the first four elements are independent of the last four elements. Lastly, if start position comes from sequence x, it is match or insertion, so I suppose:</p>
+<ul>
+<li><span class="math inline">\(\pi_{M} + \pi_{I}=1\)</span> *</li>
+</ul>
+<p>In the second row, gap open probability is both <span class="math inline">\(\delta\)</span>m if we jump to another sequence k, then will add recombination probability. Here we should notice that <span class="math inline">\(T_{27}\)</span> is 0, which means the start point in target sequence should not be a gap when we jump to another sequence.</p>
+<p>In the third row, <span class="math inline">\(T_{34}=T_{37}=0\)</span>, here we can suppose there is no allowance to transition from insertion to deletion, gap extension is allowed, of course.</p>
+<p>In the fourth row, There is no allowance to transition from deletion to insertion. gap extension is allowed, of course.</p>
+<p>The last four rows also show the same rule with the first four rows. Therefore, we should notice that the last two positions shown in picture should not happen in practice!</p>
+<p>Last point I would add is gap  also exist in target sequence. In the simulation, these gaps is sampled from the statonary distribution of the emission matrix.</p>
+</section>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
