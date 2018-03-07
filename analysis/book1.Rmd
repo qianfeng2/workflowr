@@ -197,3 +197,80 @@ plot(tr2,font=1)
 
 
 ## Phylogenetic network
+An overview of phylogenetic network is [here](https://qianfeng2.github.io/workflowr/Huson2011paper.html) 
+
+Phylogenetic networks can be computed from wide range of datasets, including multiple sequence alignments, splits, distance matrices, set of trees, clusters, rooted triplets or unrooted quartets.
+
+Newick  string could be extended to describe a rooted phylogenetic network. The method is to to assign formal labels $Hi$ to reticulate nodes, details could be in the following Figure 4.7. Conversely, if we are given a this kind of Newick format to construct a network, first step is to construct a rooted phylogenetic tree, then merge the same formal taxon $H$.
+
+![](newick_network.jpg)
+
+
+Since my PhD project is related with recombination network. Let's introduce this type.
+
+Recombination network is a rooted network that describe the evolution of a set of sequences(usually come from different individuals) in terms of mutation(along the edges of branch), speciation events (at tree nodes) and recombination events (at reticulate nodes).
+
+### Definition recombination network
+
+Here is a formal definition of recombination network:
+
+Let $M$ be a multiple alignment of binary sequences of length L, on $\chi $. A recombination network $N$ representing $M$ is given by a combining of rooted phylogenetic network on  $\chi $, together with two additional labelings:
+
+(i)each node $v$ of $N$ is labeled by a binary sequence $\delta(v)$ of length L.
+
+(ii)each tree edge $e$ is labeled by a set of positions $\delta(e) \subseteq \left\{1, 2,...L \right\}$.
+
+These two labelings must fulfill the following compatibility conditions: 
+
+
+* These sequence $\delta(v)$ assigned to any leaf $v$ must equal the sequence in M that is given for the taxon associated with $v$.
+* If **r** is a reticulate node(often called recombination node) with parents v and w, then the sequence $\delta(r)$ must be **obtainable ** from $\delta(v)$ and  $\delta(w)$ by a crossover.
+* If $e=(v, w)$ is a tree edge, then the set of positions at which two sequences $\delta(v)$ and  $\delta(w)$ differ must equal $\delta(e)$.
+
+For computational reasons, the following condition is usually also required:
+
+* Any given position may mutate at most once in the network. In other words, for any given position $i$, there exist at most one edge $e$ with $i \in \delta(e)$
+
+
+Here we can verify this simple recombination network example, can the node $r$ be obtained by a single-crossover recombination from parental sequences?
+
+![](recom_network.jpg)
+
+Evolution in the presence of recombination is usually studied in population genetics, rather than in phylogeny, focusing a statistical method , under the ``coalescent with recombination" model, a description of history from $n$ sampled sequences give rise to a graph called ancestral recombination graph(ARG).
+
+In fact, evolutionary history of any sufficiently short segment of sequence is a rooted phylogenetic tree. Therefore, one natural and direct way is to construct a suitable rooted phylogenetic tree $T_i$ for each position $i$ in the alignment $M$, we call any such tree $T_i$ as \textbf{local tree}, then combine all trees into a suitable phylogenetic network $N$.
+
+### Two impractical conntruction ways
+
+Currently, there are two ways to construct phylogenetic network by these local trees:
+
+* The local-tree parsimony approach
+* A heuristic for the local tree approach
+
+First in the local-tree parsimony approach, in the local-tree graph $G$ any path $P$ is defined as :
+
+\begin{equation}
+P=( v(1,T_{1}), v(2,T_{2}),... v(L,T_{L}))
+\end{equation}
+
+The total weight of such path is the summation of node weight and edge weight. node weight means the minimum number of substitutions required for the i-th character on the rooted phylogenetic tree, edge weight is the minimum number of reticulate nodes which links tree $T$ and $T'$, reflecting the recombination distance. Any two nodes $v(i,T)$ and $v(i+1,T')$ at adjacent positions in the alignment are corrected by a directed edge $e=(v(i,T), v(i+1,T'))$. 
+
+![](recom_parsimony.jpg)
+
+
+A *most parsimony* set of trees for $M$ is given by a path P of minimum weight, then recursion method could be used, see below:
+
+\begin{equation}
+W(i,T)=
+\begin{cases}
+min_{T'}{W(i-1,T')+w(v(i-1,T'), v(i,T))+w(v(i,T))}& \text{if i $>$1}\\
+w(v(1,T))& \text{else}
+\end{cases}
+\end{equation}
+
+An example is shown in the figure. Unfortunately, this method is not practical, since computing a suitable phylogenetic network representing all rooted trees in second part is an NP-hard problem, besides that, computation of edges weight is also NP-hard.
+
+
+Next is the heuristic for the local tree approach.The first simplification is to use unrooted phylogenetic trees rather than rooted trees, main simplification is to consider a small part of full local tree graph.
+
+The heuristic starts by computing a phylogenetic tree for $M$ using maximum parsimony method. Then we compute the SPR-neighborhood S of T that only one SPR modification of T, the main recursion is the same as previous section. The resulting set of trees might depend quite strongly on the initial tree, so once completing the first pass of this algorithm, a second pass is needed, start tree will be replaced by the tree from last position. However, this step is still challenging in practice.
