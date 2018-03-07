@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-02-13</p>
+<p><strong>Last updated:</strong> 2018-03-07</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> d409649</p>
+<p><strong>Code version:</strong> 2719f85</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -425,6 +425,58 @@ plot(tr1,font=1)</code></pre>
 </section>
 <section id="phylogenetic-network" class="level2">
 <h2>Phylogenetic network</h2>
+<p>An overview of phylogenetic network is <a href="https://qianfeng2.github.io/workflowr/Huson2011paper.html">here</a></p>
+<p>Phylogenetic networks can be computed from wide range of datasets, including multiple sequence alignments, splits, distance matrices, set of trees, clusters, rooted triplets or unrooted quartets.</p>
+<p>Newick string could be extended to describe a rooted phylogenetic network. The method is to to assign formal labels <span class="math inline">\(Hi\)</span> to reticulate nodes, details could be in the following Figure 4.7. Conversely, if we are given a this kind of Newick format to construct a network, first step is to construct a rooted phylogenetic tree, then merge the same formal taxon <span class="math inline">\(H\)</span>.</p>
+<p><img src="newick_network.jpg" /></p>
+<p>Since my PhD project is related with recombination network. Let’s introduce this type.</p>
+<p>Recombination network is a rooted network that describe the evolution of a set of sequences(usually come from different individuals) in terms of mutation(along the edges of branch), speciation events (at tree nodes) and recombination events (at reticulate nodes).</p>
+<section id="definition-recombination-network" class="level3">
+<h3>Definition recombination network</h3>
+<p>Here is a formal definition of recombination network:</p>
+<p>Let <span class="math inline">\(M\)</span> be a multiple alignment of binary sequences of length L, on $$. A recombination network <span class="math inline">\(N\)</span> representing <span class="math inline">\(M\)</span> is given by a combining of rooted phylogenetic network on $$, together with two additional labelings:</p>
+<p>(i)each node <span class="math inline">\(v\)</span> of <span class="math inline">\(N\)</span> is labeled by a binary sequence <span class="math inline">\(\delta(v)\)</span> of length L.</p>
+<p>(ii)each tree edge <span class="math inline">\(e\)</span> is labeled by a set of positions <span class="math inline">\(\delta(e) \subseteq \left\{1, 2,...L \right\}\)</span>.</p>
+<p>These two labelings must fulfill the following compatibility conditions:</p>
+<ul>
+<li>These sequence <span class="math inline">\(\delta(v)\)</span> assigned to any leaf <span class="math inline">\(v\)</span> must equal the sequence in M that is given for the taxon associated with <span class="math inline">\(v\)</span>.</li>
+<li>If <strong>r</strong> is a reticulate node(often called recombination node) with parents v and w, then the sequence <span class="math inline">\(\delta(r)\)</span> must be <strong>obtainable </strong> from <span class="math inline">\(\delta(v)\)</span> and <span class="math inline">\(\delta(w)\)</span> by a crossover.</li>
+<li>If <span class="math inline">\(e=(v, w)\)</span> is a tree edge, then the set of positions at which two sequences <span class="math inline">\(\delta(v)\)</span> and <span class="math inline">\(\delta(w)\)</span> differ must equal <span class="math inline">\(\delta(e)\)</span>.</li>
+</ul>
+<p>For computational reasons, the following condition is usually also required:</p>
+<ul>
+<li>Any given position may mutate at most once in the network. In other words, for any given position <span class="math inline">\(i\)</span>, there exist at most one edge <span class="math inline">\(e\)</span> with <span class="math inline">\(i \in \delta(e)\)</span></li>
+</ul>
+<p>Here we can verify this simple recombination network example, can the node <span class="math inline">\(r\)</span> be obtained by a single-crossover recombination from parental sequences?</p>
+<p><img src="recom_network.jpg" /></p>
+<p>Evolution in the presence of recombination is usually studied in population genetics, rather than in phylogeny, focusing a statistical method , under the ``coalescent with recombination&quot; model, a description of history from <span class="math inline">\(n\)</span> sampled sequences give rise to a graph called ancestral recombination graph(ARG).</p>
+<p>In fact, evolutionary history of any sufficiently short segment of sequence is a rooted phylogenetic tree. Therefore, one natural and direct way is to construct a suitable rooted phylogenetic tree <span class="math inline">\(T_i\)</span> for each position <span class="math inline">\(i\)</span> in the alignment <span class="math inline">\(M\)</span>, we call any such tree <span class="math inline">\(T_i\)</span> as , then combine all trees into a suitable phylogenetic network <span class="math inline">\(N\)</span>.</p>
+</section>
+<section id="two-impractical-conntruction-ways" class="level3">
+<h3>Two impractical conntruction ways</h3>
+<p>Currently, there are two ways to construct phylogenetic network by these local trees:</p>
+<ul>
+<li>The local-tree parsimony approach</li>
+<li>A heuristic for the local tree approach</li>
+</ul>
+<p>First in the local-tree parsimony approach, in the local-tree graph <span class="math inline">\(G\)</span> any path <span class="math inline">\(P\)</span> is defined as :</p>
+<span class="math display">\[\begin{equation}
+P=( v(1,T_{1}), v(2,T_{2}),... v(L,T_{L}))
+\end{equation}\]</span>
+<p>The total weight of such path is the summation of node weight and edge weight. node weight means the minimum number of substitutions required for the i-th character on the rooted phylogenetic tree, edge weight is the minimum number of reticulate nodes which links tree <span class="math inline">\(T\)</span> and <span class="math inline">\(T&#39;\)</span>, reflecting the recombination distance. Any two nodes <span class="math inline">\(v(i,T)\)</span> and <span class="math inline">\(v(i+1,T&#39;)\)</span> at adjacent positions in the alignment are corrected by a directed edge <span class="math inline">\(e=(v(i,T), v(i+1,T&#39;))\)</span>.</p>
+<p><img src="recom_parsimony.jpg" /></p>
+<p>A <em>most parsimony</em> set of trees for <span class="math inline">\(M\)</span> is given by a path P of minimum weight, then recursion method could be used, see below:</p>
+<span class="math display">\[\begin{equation}
+W(i,T)=
+\begin{cases}
+min_{T&#39;}{W(i-1,T&#39;)+w(v(i-1,T&#39;), v(i,T))+w(v(i,T))}&amp; \text{if i $&gt;$1}\\
+w(v(1,T))&amp; \text{else}
+\end{cases}
+\end{equation}\]</span>
+<p>An example is shown in the figure. Unfortunately, this method is not practical, since computing a suitable phylogenetic network representing all rooted trees in second part is an NP-hard problem, besides that, computation of edges weight is also NP-hard.</p>
+<p>Next is the heuristic for the local tree approach.The first simplification is to use unrooted phylogenetic trees rather than rooted trees, main simplification is to consider a small part of full local tree graph.</p>
+<p>The heuristic starts by computing a phylogenetic tree for <span class="math inline">\(M\)</span> using maximum parsimony method. Then we compute the SPR-neighborhood S of T that only one SPR modification of T, the main recursion is the same as previous section. The resulting set of trees might depend quite strongly on the initial tree, so once completing the first pass of this algorithm, a second pass is needed, start tree will be replaced by the tree from last position. However, this step is still challenging in practice.</p>
+</section>
 </section>
 
 <script type="text/x-mathjax-config">
