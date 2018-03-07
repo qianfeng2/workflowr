@@ -240,7 +240,7 @@ Evolution in the presence of recombination is usually studied in population gene
 
 In fact, evolutionary history of any sufficiently short segment of sequence is a rooted phylogenetic tree. Therefore, one natural and direct way is to construct a suitable rooted phylogenetic tree $T_i$ for each position $i$ in the alignment $M$, we call any such tree $T_i$ as \textbf{local tree}, then combine all trees into a suitable phylogenetic network $N$.
 
-### Two impractical conntruction ways
+### Two impractical construction ways
 
 Currently, there are two ways to construct phylogenetic network by these local trees:
 
