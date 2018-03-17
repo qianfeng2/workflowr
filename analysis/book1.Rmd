@@ -310,7 +310,7 @@ Robinson-Foulds distance is also a proper metric for comparing tree distance.
 
 Actually, there could be a tree or other graph to represent a same set of splits. There is also an important lemma: a set of splits are compatible if and only if there exists a split network N representing S that is a tree. Hence, given our input is a set of splits, how to construct a split network N as output is our first challenge. Below are two available approaches.
 
-The first is the *convex hull algorithm* that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the *circular network algorithm* , which can be applied to any set of **circular** splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.
+The first is the **convex hull algorithm** that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the **circular network algorithm** , which can be applied to any set of *circular* splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.
 
 Both algorithms proceed in two steps. In the first step, all trivial splits in $S =\left\{ S_{1} , . . . , S_{m} \right\}$ are processed to obtain a star network consisting of a central node and one leaf per taxon, noted 
 $S^{O}$ (outer). Then, in the second step, the remaining splits are inserted one by one , noted $S^{I}$ (inner) so as to obtain the final network.
