@@ -311,7 +311,7 @@ shared across the workflowr files. -->
 <p><strong>Last updated:</strong> 2018-03-17</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> cf8eecd</p>
+<p><strong>Code version:</strong> 99848d1</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -495,7 +495,7 @@ d_{RF}(S_{1},S_{2})=\frac{|S_{1} \Delta S_{2}|}{2}
 \end{equation}\]</span></p>
 <p>Robinson-Foulds distance is also a proper metric for comparing tree distance.</p>
 <p>Actually, there could be a tree or other graph to represent a same set of splits. There is also an important lemma: a set of splits are compatible if and only if there exists a split network N representing S that is a tree. Hence, given our input is a set of splits, how to construct a split network N as output is our first challenge. Below are two available approaches.</p>
-<p>The first is the <em>convex hull algorithm</em> that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the <em>circular network algorithm</em> , which can be applied to any set of <strong>circular</strong> splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.</p>
+<p>The first is the <strong>convex hull algorithm</strong> that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the <strong>circular network algorithm</strong> , which can be applied to any set of <em>circular</em> splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.</p>
 <p>Both algorithms proceed in two steps. In the first step, all trivial splits in <span class="math inline">\(S =\left\{ S_{1} , . . . , S_{m} \right\}\)</span> are processed to obtain a star network consisting of a central node and one leaf per taxon, noted <span class="math inline">\(S^{O}\)</span> (outer). Then, in the second step, the remaining splits are inserted one by one , noted <span class="math inline">\(S^{I}\)</span> (inner) so as to obtain the final network.</p>
 </section>
 </section>
