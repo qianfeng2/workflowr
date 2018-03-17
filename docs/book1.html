@@ -308,10 +308,10 @@ div.tocify {
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
 <!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-03-07</p>
+<p><strong>Last updated:</strong> 2018-03-17</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 8113226</p>
+<p><strong>Code version:</strong> cf8eecd</p>
 <!-- Add your analysis here -->
 <section id="basic-concepts" class="level2">
 <h2>Basic concepts</h2>
@@ -434,7 +434,7 @@ plot(tr1,font=1)</code></pre>
 <section id="definition-recombination-network" class="level3">
 <h3>Definition recombination network</h3>
 <p>Here is a formal definition of recombination network:</p>
-<p>Let <span class="math inline">\(M\)</span> be a multiple alignment of binary sequences of length L, on $$. A recombination network <span class="math inline">\(N\)</span> representing <span class="math inline">\(M\)</span> is given by a combining of rooted phylogenetic network on $$, together with two additional labelings:</p>
+<p>Let <span class="math inline">\(M\)</span> be a multiple alignment of binary sequences of length L, on <span class="math inline">\(\chi\)</span>. A recombination network <span class="math inline">\(N\)</span> representing <span class="math inline">\(M\)</span> is given by a combining of rooted phylogenetic network on <span class="math inline">\(\chi\)</span>, together with two additional labelings:</p>
 <p>(i)each node <span class="math inline">\(v\)</span> of <span class="math inline">\(N\)</span> is labeled by a binary sequence <span class="math inline">\(\delta(v)\)</span> of length L.</p>
 <p>(ii)each tree edge <span class="math inline">\(e\)</span> is labeled by a set of positions <span class="math inline">\(\delta(e) \subseteq \left\{1, 2,...L \right\}\)</span>.</p>
 <p>These two labelings must fulfill the following compatibility conditions:</p>
@@ -476,6 +476,27 @@ w(v(1,T))&amp; \text{else}
 <p>An example is shown in the figure. Unfortunately, this method is not practical, since computing a suitable phylogenetic network representing all rooted trees in second part is an NP-hard problem, besides that, computation of edges weight is also NP-hard.</p>
 <p>Next is the heuristic for the local tree approach.The first simplification is to use unrooted phylogenetic trees rather than rooted trees, main simplification is to consider a small part of full local tree graph.</p>
 <p>The heuristic starts by computing a phylogenetic tree for <span class="math inline">\(M\)</span> using maximum parsimony method. Then we compute the SPR-neighborhood S of T that only one SPR modification of T, the main recursion is the same as previous section. The resulting set of trees might depend quite strongly on the initial tree, so once completing the first pass of this algorithm, a second pass is needed, start tree will be replaced by the tree from last position. However, this step is still challenging in practice.</p>
+</section>
+<section id="computing-recombination-networks-from-binary-sequences" class="level3">
+<h3>Computing recombination networks from binary sequences</h3>
+<p>Actually, in paper “Computing recombination networks from binary sequences” Daniel H.Huson 2005, researchers proposed a method to draw recombination network from aligned binary sequences. There are some important and meaningful concepts before the description of core algorithm. Let’s first introduce these concepts.</p>
+<p><strong>Splits</strong> can be compatible, circular, and weakly compatible. The last one is of interest because these splits can be efficiently computed using split decomposition algorithm.</p>
+<p><img src="split.jpg" /></p>
+<p>Here the term compatible, incompatible and split network all occur in above mentioned paper.</p>
+<p>Given the following unrooted phylogenetic tree, there are seven edges in this tree, it gives rise to seven split, called split encoding of <span class="math inline">\(T\)</span>. Suppose we are given an arbitrary set of splits S, we would like to know whether S can be represented by some unrooted phylogenetic tree T with <span class="math inline">\(S=S(T)\)</span>. The answer is given by compatibility theorem.</p>
+<p><img src="split_tree.jpg" /></p>
+<p><img src="compatibility.jpg" /></p>
+<p>It is also useful to represent the incompatibilities among a set of splits S by a graph called <em>Incompatibility graph</em>, the formal definition is here: <img src="IG.jpg" /></p>
+<p><strong>Incompatibility graph</strong>: The Incompatibility graph IG(S) of a set of splits S is the graph <span class="math inline">\((V,E)\)</span> that has node <span class="math inline">\(V= S\)</span> and edge set <span class="math inline">\(E=\left\{(s_{1},s_{2}) | s_{1} and s_{2} are compatible\right\}\)</span> , one example is shown in figure 5.3.</p>
+<p>From the definition of incompatibility graph, we could know that if one split in S is compatible with other splits in S, then this split will be isolated node in incompatibility graph.The formal definition of split network is shown below.</p>
+<p><img src="SN.jpg" /></p>
+<p>If we want to compare two split network <span class="math inline">\(N_{1}\)</span> and <span class="math inline">\(N_{2}\)</span>, we compare the corresponding set of splits <span class="math inline">\(S_{1}\)</span> and <span class="math inline">\(S_{2}\)</span>, using the Robinson-Foulds distance: <span class="math display">\[\begin{equation}
+d_{RF}(S_{1},S_{2})=\frac{|S_{1} \Delta S_{2}|}{2}
+\end{equation}\]</span></p>
+<p>Robinson-Foulds distance is also a proper metric for comparing tree distance.</p>
+<p>Actually, there could be a tree or other graph to represent a same set of splits. There is also an important lemma: a set of splits are compatible if and only if there exists a split network N representing S that is a tree. Hence, given our input is a set of splits, how to construct a split network N as output is our first challenge. Below are two available approaches.</p>
+<p>The first is the <em>convex hull algorithm</em> that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the <em>circular network algorithm</em> , which can be applied to any set of <strong>circular</strong> splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.</p>
+<p>Both algorithms proceed in two steps. In the first step, all trivial splits in <span class="math inline">\(S =\left\{ S_{1} , . . . , S_{m} \right\}\)</span> are processed to obtain a star network consisting of a central node and one leaf per taxon, noted <span class="math inline">\(S^{O}\)</span> (outer). Then, in the second step, the remaining splits are inserted one by one , noted <span class="math inline">\(S^{I}\)</span> (inner) so as to obtain the final network.</p>
 </section>
 </section>
 
