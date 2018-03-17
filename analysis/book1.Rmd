@@ -214,7 +214,7 @@ Recombination network is a rooted network that describe the evolution of a set o
 
 Here is a formal definition of recombination network:
 
-Let $M$ be a multiple alignment of binary sequences of length L, on $\chi $. A recombination network $N$ representing $M$ is given by a combining of rooted phylogenetic network on  $\chi $, together with two additional labelings:
+Let $M$ be a multiple alignment of binary sequences of length L, on $\chi$. A recombination network $N$ representing $M$ is given by a combining of rooted phylogenetic network on  $\chi$, together with two additional labelings:
 
 (i)each node $v$ of $N$ is labeled by a binary sequence $\delta(v)$ of length L.
 
@@ -274,3 +274,44 @@ An example is shown in the figure. Unfortunately, this method is not practical, 
 Next is the heuristic for the local tree approach.The first simplification is to use unrooted phylogenetic trees rather than rooted trees, main simplification is to consider a small part of full local tree graph.
 
 The heuristic starts by computing a phylogenetic tree for $M$ using maximum parsimony method. Then we compute the SPR-neighborhood S of T that only one SPR modification of T, the main recursion is the same as previous section. The resulting set of trees might depend quite strongly on the initial tree, so once completing the first pass of this algorithm, a second pass is needed, start tree will be replaced by the tree from last position. However, this step is still challenging in practice.
+
+### Computing recombination networks from binary sequences
+
+Actually, in paper "Computing recombination networks from binary sequences" Daniel H.Huson 2005, researchers proposed a method to draw recombination network from aligned binary sequences. There are some important and meaningful concepts before the description of core algorithm. Let's first introduce these concepts.
+
+**Splits** can be compatible, circular, and weakly compatible. The last one is of interest because these splits can be efficiently computed using split decomposition algorithm.
+
+![](split.jpg)
+
+Here the term compatible, incompatible  and split network all occur in above mentioned paper.
+
+Given the following unrooted phylogenetic tree, there are seven edges in this tree, it gives rise to seven split, called split encoding of $T$. Suppose we are given an arbitrary set of splits S, we would like to know whether S can be represented by some unrooted phylogenetic tree T with $S=S(T)$. The answer is given by compatibility theorem.
+
+![](split_tree.jpg)
+
+![](compatibility.jpg)
+
+
+It is also useful to represent the incompatibilities among a set of splits S by a graph called *Incompatibility graph*, the formal definition is here:
+![](IG.jpg)
+
+**Incompatibility graph**: The Incompatibility graph IG(S) of a set of splits S is the graph $(V,E)$ that has node $V= S$ and edge set $E=\left\{(s_{1},s_{2}) | s_{1}  and  s_{2}  are compatible\right\}$ , one example is shown in figure 5.3.  
+
+From the definition of incompatibility graph, we could know that if one split in S is compatible with other splits in S, then this split will be isolated node in incompatibility graph.The formal definition of split network is shown below.
+
+![](SN.jpg)
+
+If we want to compare two split network $N_{1}$ and  $N_{2}$, we compare the corresponding set of splits $S_{1}$ and $S_{2}$, using the Robinson-Foulds distance:
+\begin{equation}
+d_{RF}(S_{1},S_{2})=\frac{|S_{1} \Delta S_{2}|}{2}
+\end{equation}
+
+Robinson-Foulds distance is also a proper metric for comparing tree distance.
+
+Actually, there could be a tree or other graph to represent a same set of splits. There is also an important lemma: a set of splits are compatible if and only if there exists a split network N representing S that is a tree. Hence, given our input is a set of splits, how to construct a split network N as output is our first challenge. Below are two available approaches.
+
+The first is the *convex hull algorithm* that computes the Buneman graph and can be applied to any set of splits, using an exponential number of nodes and edges in the worst case; the second is the *circular network algorithm* , which can be applied to any set of **circular** splits and produces an outer-labeled planar network with only a quadratic number of nodes and edges.
+
+Both algorithms proceed in two steps. In the first step, all trivial splits in $S =\left\{ S_{1} , . . . , S_{m} \right\}$ are processed to obtain a star network consisting of a central node and one leaf per taxon, noted 
+$S^{O}$ (outer). Then, in the second step, the remaining splits are inserted one by one , noted $S^{I}$ (inner) so as to obtain the final network.
+
