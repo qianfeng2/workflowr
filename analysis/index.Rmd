@@ -78,10 +78,14 @@ If you have any question about this project, please feel free to contact me:
 
 
 ### Var biology background knowledge
-- Ape parasite origins of human malaria virulence genes. *Larremore, D. B. et al. Nat. Commun. 6:8368 doi: 10.1038/ncomms9368 (2015)*
+- 1.Ape parasite origins of human malaria virulence genes. *Larremore, D. B. et al. Nat. Commun. 6:8368 doi: 10.1038/ncomms9368 (2015)*
 - Paper: https://www.nature.com/articles/ncomms9368.pdf 
 - Note: [link](larremore2016.html)
 
+
+- 2.Plasmodium falciparum Erythrocyte Membrane Protein 1 Diversity in Seven Genomes – Divide and Conquer. *Rask, Thomas S., et al.PLoS computational biology 6.9 (2010): e1000933.*
+- Paper: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000933
+- Note: [link](Raskpaper.html)
 
 
 ***
