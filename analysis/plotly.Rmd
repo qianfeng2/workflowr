@@ -1,0 +1,189 @@
+---
+title: "Play with PLOTLY R package"
+author: "Qian Feng"
+date: 2018-03-29
+output: html_document
+---
+
+<!-- The file analysis/chunks.R contains chunks that define default settings
+shared across the workflowr files. -->
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+<!-- Update knitr chunk options -->
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+<!-- Insert the date the file was last updated -->
+```{r last-updated, echo=FALSE, results='asis'}
+```
+
+<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
+ package git2r is installed -->
+```{r code-version, echo=FALSE, results='asis'}
+```
+
+<!-- Add your analysis here -->
+I came across one website introducing [plotly](https://plotly-book.cpsievert.me) R package, and was addicted  for a few days, just share some of these amazing plots with you. 
+The main scheme is introduce three basic examples, followed by scatter plot, line plot and ribbons.I will conclude this section with two great animation examples.
+
+```{r, message=FALSE, warning=FALSE}
+##install.packages("plotly")
+##packageVersion("plotly")
+library(plotly)
+library(ggplot2)
+```
+
+## Basic example 1
+Interface modified by layout() function:"click + drag"event, rangeslider() will add a slider under this figure.
+
+```{r, message=FALSE, warning=FALSE}
+library(forecast)
+p <- ggplot(fortify(gold), aes(x, y)) + geom_line()
+gg <- ggplotly(p)
+layout(gg, dragmode = "pan")
+##rangeslider(gg)
+```
+
+
+## Basic example 2
+Look at and learn the basic structre , firstly use ggplotly(), then %>% link several matrics.
+```{r, message=FALSE, warning=FALSE}
+p <- ggplot(MASS::geyser, aes(x = waiting, y = duration)) +
+  geom_density2d()
+ggplotly(p, originalData = FALSE) %>% 
+  group_by(piece) %>%
+  slice(which.min(y)) %>% 
+  add_text(
+    text = ~level, size = I(10), color = I("black"), hoverinfo = "none"
+  )
+```
+
+## Basic example 3
+```{r, message=FALSE, warning=FALSE}
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + geom_smooth()
+style(p, hoverinfo = "none", traces = 2:3)
+```
+
+Of course, we even could add annotations in detailed positions by function add_annotations() and add_segments().
+```{r, message=FALSE, warning=FALSE}
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + geom_smooth()
+p %>%
+  ggplotly(layerData = 2, originalData = FALSE) %>%
+  add_fun(function(p) {
+    p %>% slice(which.max(se)) %>%
+      add_segments(x = ~x, xend = ~x, y = ~ymin, yend = ~ymax) %>%
+      add_annotations("Maximum uncertainty", ax = 60)
+  }) %>%
+  add_fun(function(p) {
+    p %>% slice(which.min(se)) %>%
+      add_segments(x = ~x, xend = ~x, y = ~ymin, yend = ~ymax) %>%
+      add_annotations("Minimum uncertainty")
+  })
+```
+## 2D and 3D Scatter plot 
+This time we use plot_ly(), previous sections are all employed ggplotly().
+
+```{r,message=FALSE, warning=FALSE}
+##I(2)is triangle, I(3)is +
+subplot(
+  plot_ly(x = 1:25, y = 1:25, symbol = I(1:25), name = "pch"),
+  plot_ly(mpg, x = ~cty, y = ~hwy) %>% 
+    add_markers(symbol = I(1), color = I("red"),name = "red")
+)
+
+```
+
+```{r}
+p <- plot_ly(mpg, x = ~cty, y = ~hwy, alpha = 0.5)
+subplot(
+  add_markers(p, color = ~cyl, showlegend = F,name = "mpg") %>% 
+    colorbar(title = "Viridis")
+)
+```
+
+Last ones are two 3D examples, you are free to rotate the figures.
+```{r}
+plot_ly(mpg, x = ~cty, y = ~hwy, z = ~cyl) %>%
+  add_markers(color = ~cyl)
+```
+
+```{r}
+x <- seq_len(nrow(volcano)) + 100
+y <- seq_len(ncol(volcano)) + 500
+plot_ly() %>% add_surface(x = ~x, y = ~y, z = ~volcano)
+```
+
+A powerful functiom to visualize data iris:
+```{r,message=FALSE, warning=FALSE}
+pm <- GGally::ggpairs(iris)
+ggplotly(pm)
+```
+
+## Line plots
+Lower image are the same data with upper image, just to compare the effects of add_lines(p, color = ~city) and add_lines(p, linetype = ~city).
+```{r,message=FALSE, warning=FALSE}
+library(dplyr)
+top5 <- txhousing %>%
+  group_by(city) %>%
+  summarise(m = mean(sales, na.rm = TRUE)) %>%
+  arrange(desc(m)) %>%
+  top_n(5)
+
+p <- semi_join(txhousing, top5, by = "city") %>%
+  plot_ly(x = ~date, y = ~median)
+subplot(
+  add_lines(p, color = ~city),
+  add_lines(p, linetype = ~city),
+  shareX = TRUE, nrows = 2
+)
+```
+
+## Ribbons
+```{r,message=FALSE, warning=FALSE}
+library(broom)
+m <- lm(mpg ~ wt, data = mtcars)
+broom::augment(m) %>%
+  plot_ly(x = ~wt, showlegend = FALSE) %>%
+  add_markers(y = ~mpg, color = I("red")) %>%
+  add_ribbons(ymin = ~.fitted - 1.96 * .se.fit, 
+              ymax = ~.fitted + 1.96 * .se.fit, color = I("gray80")) %>%
+  add_lines(y = ~.fitted, color = I("steelblue"))
+```
+
+## Animation 1
+Return to use function ggplotly()
+```{r,message=FALSE, warning=FALSE}
+data(gapminder, package = "gapminder")
+head(gapminder)
+gg <- ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent)) +
+  geom_point(aes(size = pop, frame = year, ids = country)) +
+  scale_x_log10()
+ggplotly(gg)
+```
+
+## Animation 2
+
+```{r}
+meanLife <- with(gapminder, tapply(lifeExp, INDEX = continent, mean))
+gapminder$continent <- factor(
+  gapminder$continent, levels = names(sort(meanLife))
+)
+base <- gapminder %>%
+  plot_ly(x = ~gdpPercap, y = ~lifeExp, size = ~pop, 
+          text = ~country, hoverinfo = "text") %>%
+  layout(xaxis = list(type = "log"))
+base %>%
+  add_markers(data = gapminder, frame = ~continent) %>%
+  hide_legend() %>%
+  animation_opts(frame = 1000, transition = 0, redraw = FALSE)
+```
+
+## Session information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
+```
