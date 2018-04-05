@@ -109,8 +109,13 @@ If you have any question about this project, please feel free to contact me:
 ## Book Review
 ![Book Cover](cover.png)
 
-### [Book: Phylogenetic networks: concepts, algorithms and applications](book1.html)
+### [Book1: Phylogenetic networks: concepts, algorithms and applications](book1.html)
+
+
+![Book Cover](book_cover.jpg)
+
+### [Book2: Gene Genealogies, Variation and Evolution](https://qianfeng2.github.io/Others/coalescent_booksummary.pdf)
 
 ***
 ## Plot tools
-#### [Play with plotly package](plotly.html)
+#### [Play with plotly R package](plotly.html)
