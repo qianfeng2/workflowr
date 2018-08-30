@@ -118,4 +118,8 @@ If you have any question about this project, please feel free to contact me:
 
 ***
 ## Plot tools
-#### [Play with plotly R package](plotly.html)
+### [Play with plotly R package](plotly.html)
+
+***
+## Computer science
+### [Algorithm complexity: Big O](https://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation)
