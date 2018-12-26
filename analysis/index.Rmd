@@ -116,7 +116,7 @@ If you have any question about this project, please feel free to contact me:
 
 ### [Book2: Gene Genealogies, Variation and Evolution](https://qianfeng2.github.io/Others/coalescent_booksummary.pdf)
 
-![Book Cover](ML.jpg)
+![Book Cover](ML_book.jpg)
 
 ### [Book3: Machine Learning. A Probabilistic Perspective ](ML.html)
 
