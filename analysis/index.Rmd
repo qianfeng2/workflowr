@@ -118,7 +118,7 @@ If you have any question about this project, please feel free to contact me:
 
 ![Book Cover](ML.jpg)
 
-### [Book3: Machine Learning. A Probabilistic Perspective ]()
+### [Book3: Machine Learning. A Probabilistic Perspective ](ML.html)
 
 ***
 ## Plot tools
